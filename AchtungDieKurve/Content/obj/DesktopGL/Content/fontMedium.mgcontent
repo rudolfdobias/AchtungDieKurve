@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/fontMedium.spritefont</SourceFile>
+  <SourceTime>2023-04-04T19:15:55.6057271+02:00</SourceTime>
+  <DestFile>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/bin/DesktopGL/Content/fontMedium.xnb</DestFile>
+  <DestTime>2023-04-04T19:15:57.5007604+02:00</DestTime>
+  <Importer>FontDescriptionImporter</Importer>
+  <ImporterTime>2020-08-10T18:17:54+02:00</ImporterTime>
+  <Processor>FontDescriptionProcessor</Processor>
+  <ProcessorTime>2020-08-10T18:17:54+02:00</ProcessorTime>
+  <Parameters>
+    <Key>PremultiplyAlpha</Key>
+    <Value>True</Value>
+  </Parameters>
+  <Parameters>
+    <Key>TextureFormat</Key>
+    <Value>Compressed</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

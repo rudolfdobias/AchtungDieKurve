@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <SourceFile>C:/Users/Já/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Crashes/moderate/4.wav</SourceFile>
+  <SourceTime>2019-03-23T20:48:11.7159638+01:00</SourceTime>
+  <DestFile>C:/Users/Já/source/repos/AchtungDieKurve/AchtungDieKurve/Content/bin/DesktopGL/Crashes/moderate/4.xnb</DestFile>
+  <DestTime>2021-05-06T23:39:32.8692275+02:00</DestTime>
+  <Importer>WavImporter</Importer>
+  <ImporterTime>2020-08-10T16:17:54+02:00</ImporterTime>
+  <Processor>SoundEffectProcessor</Processor>
+  <ProcessorTime>2020-08-10T16:17:54+02:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

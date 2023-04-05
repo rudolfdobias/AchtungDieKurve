@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Profile>Reach</Profile>
+  <Platform>DesktopGL</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/arrow.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/blank.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/body.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/copyfont.spritefont</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/crash.wav</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Crashes/heavy/0.wav</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Crashes/heavy/1.wav</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Crashes/heavy/2.wav</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Crashes/moderate/0.wav</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Crashes/moderate/1.wav</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Crashes/moderate/2.wav</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Crashes/moderate/3.wav</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Crashes/moderate/4.wav</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Crashes/weak/0.wav</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Crashes/weak/1.wav</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Crashes/weak/2.wav</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Crashes/weak/3.wav</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Crashes/weak/4.wav</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Crashes/weak/5.wav</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Crashes/weak/6.wav</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Crashes/weak/7.wav</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/fontMedium.spritefont</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/fontSmall.spritefont</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/fontSmallBold.spritefont</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/gamefont.spritefont</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/gradient.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/menufont.spritefont</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/clear.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/cross.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/fast.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/fast_green.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/fast_red.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/fat_green.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/fat_red.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/grave.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/haluz.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/nowalls.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/nowalls_green.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/slow.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/slow_green.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/slow_red.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/switch.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/switch_red.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/thin.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/thin_green.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/thin_red.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/transcend.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Powerups/twister.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/score_big_bold.spritefont</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/score_small_bold.spritefont</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/scoreback.jpg</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/sracka.png</File>
+    <File>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/star.png</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>
