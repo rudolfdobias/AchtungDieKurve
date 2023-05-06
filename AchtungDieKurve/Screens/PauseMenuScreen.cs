@@ -8,6 +8,8 @@
 #endregion
 
 #region Using Statements
+
+using AchtungDieKurve.Screens;
 using Microsoft.Xna.Framework;
 #endregion
 
@@ -52,7 +54,7 @@ namespace AchtungDieKurve
         /// </summary>
         void QuitGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            const string message = "Do you really want to bail out?";
+            const string message = "Do you really want to exit?";
 
             MessageBoxScreen confirmQuitMessageBox = new MessageBoxScreen(message);
 

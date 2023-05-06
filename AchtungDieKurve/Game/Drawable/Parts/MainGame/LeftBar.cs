@@ -13,7 +13,7 @@ namespace AchtungDieKurve.Game.Drawable.Parts.MainGame
         public Microsoft.Xna.Framework.Rectangle ContentArea
         {
             get {
-                return new Microsoft.Xna.Framework.Rectangle(0, 0, WIDTH, GameBase.Settings.ScreenHeight);
+                return new Microsoft.Xna.Framework.Rectangle(0, 0, WIDTH, GameBase.Defaults.ScreenHeight);
             }
         }
 

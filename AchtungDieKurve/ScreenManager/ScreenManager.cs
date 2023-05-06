@@ -8,7 +8,6 @@
 #endregion
 
 #region Using Statements
-using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
@@ -30,19 +29,19 @@ namespace AchtungDieKurve
     {
         #region Fields
 
-        List<GameScreen> screens = new List<GameScreen>();
-        List<GameScreen> screensToUpdate = new List<GameScreen>();
+        private readonly List<GameScreen> _screens = new List<GameScreen>();
+        readonly List<GameScreen> _screensToUpdate = new List<GameScreen>();
 
-        InputState input = new InputState();
+        readonly InputState _input = new InputState();
 
-        SpriteBatch spriteBatch;
-        SpriteFont font;
-        SpriteFont copyfont;
-        Texture2D blankTexture;
+        SpriteBatch _spriteBatch;
+        SpriteFont _font;
+        SpriteFont _copyfont;
+        Texture2D _blankTexture;
     
-        bool isInitialized;
+        bool _isInitialized;
 
-        bool traceEnabled;
+        bool _traceEnabled;
 
         #endregion
 
@@ -55,7 +54,7 @@ namespace AchtungDieKurve
         /// </summary>
         public SpriteBatch SpriteBatch
         {
-            get { return spriteBatch; }
+            get { return _spriteBatch; }
         }
 
         /// <summary>
@@ -64,12 +63,12 @@ namespace AchtungDieKurve
         /// </summary>
         public SpriteFont Font
         {
-            get { return font; }
+            get { return _font; }
         }
 
         public SpriteFont Copyfont
         {
-            get { return copyfont; }
+            get { return _copyfont; }
         }
 
 
@@ -80,8 +79,8 @@ namespace AchtungDieKurve
         /// </summary>
         public bool TraceEnabled
         {
-            get { return traceEnabled; }
-            set { traceEnabled = value; }
+            get { return _traceEnabled; }
+            set { _traceEnabled = value; }
         }
 
 
@@ -109,7 +108,7 @@ namespace AchtungDieKurve
         {
             base.Initialize();
 
-            isInitialized = true;
+            _isInitialized = true;
         }
 
 
@@ -121,13 +120,13 @@ namespace AchtungDieKurve
             // Load content belonging to the screen manager.
             ContentManager content = Game.Content;
         
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            font = content.Load<SpriteFont>("menufont");
-            copyfont = content.Load<SpriteFont>("copyfont");
-            blankTexture = content.Load<Texture2D>("blank");
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _font = content.Load<SpriteFont>("menufont");
+            _copyfont = content.Load<SpriteFont>("copyfont");
+            _blankTexture = content.Load<Texture2D>("blank");
 
             // Tell each of the screens to load their content.
-            foreach (GameScreen screen in screens)
+            foreach (GameScreen screen in _screens)
             {
                 screen.LoadContent();
             }
@@ -140,7 +139,7 @@ namespace AchtungDieKurve
         protected override void UnloadContent()
         {
             // Tell each of the screens to unload their content.
-            foreach (GameScreen screen in screens)
+            foreach (GameScreen screen in _screens)
             {
                 screen.UnloadContent();
             }
@@ -158,25 +157,25 @@ namespace AchtungDieKurve
         public override void Update(GameTime gameTime)
         {
             // Read the keyboard and gamepad.
-            input.Update();
+            _input.Update();
 
             // Make a copy of the master screen list, to avoid confusion if
             // the process of updating one screen adds or removes others.
-            screensToUpdate.Clear();
+            _screensToUpdate.Clear();
 
-            foreach (GameScreen screen in screens)
-                screensToUpdate.Add(screen);
+            foreach (GameScreen screen in _screens)
+                _screensToUpdate.Add(screen);
 
             bool otherScreenHasFocus = !Game.IsActive;
             bool coveredByOtherScreen = false;
 
             // Loop as long as there are screens waiting to be updated.
-            while (screensToUpdate.Count > 0)
+            while (_screensToUpdate.Count > 0)
             {
                 // Pop the topmost screen off the waiting list.
-                GameScreen screen = screensToUpdate[screensToUpdate.Count - 1];
+                GameScreen screen = _screensToUpdate[_screensToUpdate.Count - 1];
 
-                screensToUpdate.RemoveAt(screensToUpdate.Count - 1);
+                _screensToUpdate.RemoveAt(_screensToUpdate.Count - 1);
 
                 // Update the screen.
                 screen.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
@@ -188,7 +187,7 @@ namespace AchtungDieKurve
                     // give it a chance to handle input.
                     if (!otherScreenHasFocus)
                     {
-                        screen.HandleInput(input);
+                        screen.HandleInput(_input);
 
                         otherScreenHasFocus = true;
                     }
@@ -201,7 +200,7 @@ namespace AchtungDieKurve
             }
 
             // Print debug trace?
-            if (traceEnabled)
+            if (_traceEnabled)
                 TraceScreens();
         }
 
@@ -213,7 +212,7 @@ namespace AchtungDieKurve
         {
             List<string> screenNames = new List<string>();
 
-            foreach (GameScreen screen in screens)
+            foreach (GameScreen screen in _screens)
                 screenNames.Add(screen.GetType().Name);
 
             Debug.WriteLine(string.Join(", ", screenNames.ToArray()));
@@ -225,7 +224,7 @@ namespace AchtungDieKurve
         /// </summary>
         public override void Draw(GameTime gameTime)
         {
-            foreach (GameScreen screen in screens)
+            foreach (GameScreen screen in _screens)
             {
                 if (screen.ScreenState == ScreenState.Hidden)
                     continue;
@@ -250,12 +249,12 @@ namespace AchtungDieKurve
             screen.IsExiting = false;
 
             // If we have a graphics device, tell the screen to load content.
-            if (isInitialized)
+            if (_isInitialized)
             {
                 screen.LoadContent();
             }
 
-            screens.Add(screen);
+            _screens.Add(screen);
 
             // update the TouchPanel to respond to gestures this screen is interested in
             TouchPanel.EnabledGestures = screen.EnabledGestures;
@@ -271,19 +270,19 @@ namespace AchtungDieKurve
         public void RemoveScreen(GameScreen screen)
         {
             // If we have a graphics device, tell the screen to unload content.
-            if (isInitialized)
+            if (_isInitialized)
             {
                 screen.UnloadContent();
             }
 
-            screens.Remove(screen);
-            screensToUpdate.Remove(screen);
+            _screens.Remove(screen);
+            _screensToUpdate.Remove(screen);
 
             // if there is a screen still in the manager, update TouchPanel
             // to respond to gestures that screen is interested in.
-            if (screens.Count > 0)
+            if (_screens.Count > 0)
             {
-                TouchPanel.EnabledGestures = screens[screens.Count - 1].EnabledGestures;
+                TouchPanel.EnabledGestures = _screens[_screens.Count - 1].EnabledGestures;
             }
         }
 
@@ -295,7 +294,7 @@ namespace AchtungDieKurve
         /// </summary>
         public GameScreen[] GetScreens()
         {
-            return screens.ToArray();
+            return _screens.ToArray();
         }
 
 
@@ -307,13 +306,13 @@ namespace AchtungDieKurve
         {
             Viewport viewport = GraphicsDevice.Viewport;
 
-            spriteBatch.Begin();
+            _spriteBatch.Begin();
 
-            spriteBatch.Draw(blankTexture,
+            _spriteBatch.Draw(_blankTexture,
                              new Rectangle(0, 0, viewport.Width, viewport.Height),
                              Color.Black * alpha);
 
-            spriteBatch.End();
+            _spriteBatch.End();
         }
 
 

@@ -75,7 +75,7 @@ namespace AchtungDieKurve.Game.Drawable
 
         private void DrawGoal(Rectangle placement)
         {
-            var goalText = GameBase.Settings.GameGoal.ToString();
+            var goalText = GameBase.Defaults.GameGoal.ToString();
             var divisionBar = new Rectangle(placement.X, placement.Y, placement.Width, 1);
             spriteBatch.Draw(CommonResources.whitepixel, divisionBar, _goalBarColor);
             var textPlacement = Helper.CenterText(CommonResources.fontSmaller, goalText, placement);

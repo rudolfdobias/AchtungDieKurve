@@ -106,12 +106,12 @@ namespace AchtungDieKurve.Game.Drawable
         public int Diameter
         {
             get { return _diameter; }
-            set { _diameter = (int)MathHelper.Clamp(value, 1.0f, GameBase.Settings.MaxPlayerThickness); }
+            set { _diameter = (int)MathHelper.Clamp(value, 1.0f, GameBase.Defaults.MaxPlayerThickness); }
         }
 
         public int Radius
         {
-            get { return (int)MathHelper.Clamp(value: (float)Diameter / 2, min: 1.0f, max: GameBase.Settings.MaxPlayerThickness / 2); }
+            get { return (int)MathHelper.Clamp(value: (float)Diameter / 2, min: 1.0f, max: GameBase.Defaults.MaxPlayerThickness / 2); }
         }
 
         public float Speed
@@ -119,7 +119,7 @@ namespace AchtungDieKurve.Game.Drawable
             get { return _speed; }
             set
             {
-                _speed = MathHelper.Clamp(value, GameBase.Settings.MinPlayerSpeed, GameBase.Settings.MaxPlayerSpeed);
+                _speed = MathHelper.Clamp(value, GameBase.Defaults.MinPlayerSpeed, GameBase.Defaults.MaxPlayerSpeed);
             }
         }
 
@@ -214,7 +214,7 @@ namespace AchtungDieKurve.Game.Drawable
                 {
                     TraverseWall();
                 }
-                else if (_hasProtection && GameBase.Settings.WallBounceWhileProtection)
+                else if (_hasProtection && GameBase.Defaults.WallBounceWhileProtection)
                 {
                     WallBounce();
                 }
@@ -232,11 +232,11 @@ namespace AchtungDieKurve.Game.Drawable
         {
             if (_drawingHole)
             {
-                if (_randomGenerator.NextDouble() <= GameBase.Settings.HoleTerminationProbability && StopDrawingHole != null) { StopDrawingHole(this); }
+                if (_randomGenerator.NextDouble() <= GameBase.Defaults.HoleTerminationProbability && StopDrawingHole != null) { StopDrawingHole(this); }
             }
             else if (_drawingEnabled && !_hasProtection)
             {
-                if (_randomGenerator.NextDouble() <= GameBase.Settings.HoleProbability && StartDrawingHole != null) { StartDrawingHole(this); }
+                if (_randomGenerator.NextDouble() <= GameBase.Defaults.HoleProbability && StartDrawingHole != null) { StartDrawingHole(this); }
             }
         }
 
@@ -364,7 +364,7 @@ namespace AchtungDieKurve.Game.Drawable
 
         void Kurve_Start(Kurve k)
         {
-            StartProtection(GameBase.Settings.InitialProtectionTime);
+            StartProtection(GameBase.Defaults.InitialProtectionTime);
         }
 
         void Kurve_EndProtection(Kurve k)
@@ -445,9 +445,9 @@ namespace AchtungDieKurve.Game.Drawable
             _drawingEnabled = false;
             _drawingHole = false;
             _randomGenerator = new Random((int)Angle);
-            Diameter = GameBase.Settings.DefaultDiameter;
-            TurnStep = GameBase.Settings.DefaultTurnStep;
-            Speed = GameBase.Settings.DefaultSpeed;
+            Diameter = GameBase.Defaults.DefaultDiameter;
+            TurnStep = GameBase.Defaults.DefaultTurnStep;
+            Speed = GameBase.Defaults.DefaultSpeed;
         }
 
 

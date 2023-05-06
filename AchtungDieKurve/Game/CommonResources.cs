@@ -58,7 +58,7 @@ namespace AchtungDieKurve.Game
             Borders = Color.FromNonPremultiplied(130, 130, 130, 255);
             TableBodyColor = Color.FromNonPremultiplied(40, 40, 40, 255);
             Emhasis = Color.White; // Color.FromNonPremultiplied(200, 140, 0, 255);
-            MainColor = Color.FromNonPremultiplied(70, 110, 0, 240);
+            MainColor = Color.FromNonPremultiplied(241, 47, 0, 240);
             TextColor = Color.FromNonPremultiplied(240, 240, 240, 255);
         }
     }

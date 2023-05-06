@@ -8,6 +8,8 @@
 #endregion
 
 #region Using Statements
+
+using System;
 using Microsoft.Xna.Framework;
 #endregion
 
@@ -27,17 +29,21 @@ namespace AchtungDieKurve
         public MainMenuScreen()
             : base("Main Menu")
         {
+            TransitionOnTime = TimeSpan.FromSeconds(1);
+            TransitionOffTime = TimeSpan.FromSeconds(0.3);
+            
             // Create our menu entries.
             MenuEntry playGameMenuEntry = new MenuEntry("Achtung, new game!");
             
-            MenuEntry videoMenuEntry = new MenuEntry("Video");
+            MenuEntry videoMenuEntry = new MenuEntry("Settings");
            MenuEntry optionsMenuEntry = new MenuEntry("Options");
-            MenuEntry exitMenuEntry = new MenuEntry("Exit");
+           MenuEntry s1 = new MenuEntry("");
+           MenuEntry exitMenuEntry = new MenuEntry("Exit");
 
             // Hook up menu event handlers.
             playGameMenuEntry.Selected += PlayGameMenuEntrySelected;
             
-            videoMenuEntry.Selected += videoMenuEntrySelected;
+            videoMenuEntry.Selected += VideoMenuEntrySelected;
        
             exitMenuEntry.Selected += OnCancel;
 
@@ -45,7 +51,7 @@ namespace AchtungDieKurve
             MenuEntries.Add(playGameMenuEntry);
   
             MenuEntries.Add(videoMenuEntry);
-        
+            //MenuEntries.Add(s1);
             MenuEntries.Add(exitMenuEntry);
         }
 
@@ -65,7 +71,7 @@ namespace AchtungDieKurve
                                new GameConfigScreen());*/
         }
 
-        void videoMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        void VideoMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
 
             ScreenManager.AddScreen(new VideoScreen(ScreenManager), e.PlayerIndex);
@@ -80,7 +86,7 @@ namespace AchtungDieKurve
         /// </summary>
         protected override void OnCancel(PlayerIndex playerIndex)
         {
-            const string message = "Exit? Really?";
+            const string message = "Exit? You sure?";
 
             MessageBoxScreen confirmExitMessageBox = new MessageBoxScreen(message);
 

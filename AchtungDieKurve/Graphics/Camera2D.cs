@@ -94,10 +94,10 @@ namespace AchtungDieKurve.Graphics
                 return Transform;
             }
 
-            Matrix translateToOrigin = Matrix.CreateTranslation(-GameBase.Settings.ScreenWidth/2,
-                -GameBase.Settings.ScreenHeight/2, 0);
-            Matrix translateBackToPosition = Matrix.CreateTranslation(GameBase.Settings.ScreenWidth/2,
-                GameBase.Settings.ScreenHeight/2/2, 0);
+            Matrix translateToOrigin = Matrix.CreateTranslation(-GameBase.Defaults.ScreenWidth/2,
+                -GameBase.Defaults.ScreenHeight/2, 0);
+            Matrix translateBackToPosition = Matrix.CreateTranslation(GameBase.Defaults.ScreenWidth/2,
+                GameBase.Defaults.ScreenHeight/2/2, 0);
             //Create view matrix
             var _newTransform =
                  translateToOrigin*

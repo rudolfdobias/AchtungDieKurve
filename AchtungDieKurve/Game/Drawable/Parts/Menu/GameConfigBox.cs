@@ -4,22 +4,25 @@ using System.Linq;
 using AchtungDieKurve.Game.Core;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 
 namespace AchtungDieKurve.Game.Drawable.Parts.Menu
 {
     class GameConfigBox : DefaultDrawable, IContainer
     {
-        public Rectangle ContentArea { get; private set; }
+        public Rectangle ContentArea { get; }
 
         private List<PlayerDefinition> _playerDefinitions;
-        private List<Keys> _forbiddenControls = new List<Keys>
+
+        private List<Keys> _forbiddenControls = new()
         {
-            Keys.F1,Keys.F2,Keys.F3,Keys.F4,Keys.F5,Keys.F6,Keys.F7,Keys.F8,Keys.F9,Keys.F10,Keys.F11,Keys.F12,
-            Keys.CapsLock, Keys.Scroll, Keys.PrintScreen, Keys.Escape, Keys.Enter, Keys.NumLock, Keys.LeftWindows, Keys.RightWindows,
+            Keys.F1, Keys.F2, Keys.F3, Keys.F4, Keys.F5, Keys.F6, Keys.F7, Keys.F8, Keys.F9, Keys.F10, Keys.F11,
+            Keys.F12,
+            Keys.CapsLock, Keys.Scroll, Keys.PrintScreen, Keys.Escape, Keys.Enter, Keys.NumLock, Keys.LeftWindows,
+            Keys.RightWindows,
             Keys.Back, Keys.Delete
-        }; 
+        };
+
         private readonly GameScreen _screen;
         public static int MarginHorizontal;
         public const int YOffset = 305;
@@ -48,7 +51,7 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
         public int SelectedId
         {
             get { return _selectedIdx; }
-            set { _selectedIdx = (int) MathHelper.Clamp(value, 0, _playerDefinitions.Count -1); }
+            set { _selectedIdx = MathHelper.Clamp(value, 0, _playerDefinitions.Count - 1); }
         }
 
         public bool Active
@@ -60,14 +63,16 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                 {
                     _selectedIdx = 0;
                 }
+
                 _active = value;
             }
         }
 
         private bool _active;
 
-        public GameConfigBox(GameBase game, SpriteBatch spriteBatch, ref List<PlayerDefinition> playerDefinitions, GameScreen screen)
-            :base(game, spriteBatch)
+        public GameConfigBox(GameBase game, SpriteBatch spriteBatch, ref List<PlayerDefinition> playerDefinitions,
+            GameScreen screen)
+            : base(game, spriteBatch)
         {
             _playerDefinitions = playerDefinitions;
             _screen = screen;
@@ -76,13 +81,13 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
 
         private Rectangle CreateContainer()
         {
-            MarginHorizontal = GameBase.Settings.ScreenWidth / 18;
+            MarginHorizontal = GameBase.Defaults.ScreenWidth / 18;
             return new Rectangle(
                 GameConfigBox.MarginHorizontal,
                 GameConfigBox.MarginTop + YOffset,
-                GameBase.Settings.ScreenWidth - (2*GameConfigBox.MarginHorizontal),
-                GameBase.Settings.ScreenHeight - YOffset - GameConfigBox.MarginTop - GameConfigBox.MarginBottom
-                );
+                GameBase.Defaults.ScreenWidth - (2 * GameConfigBox.MarginHorizontal),
+                GameBase.Defaults.ScreenHeight - YOffset - GameConfigBox.MarginTop - GameConfigBox.MarginBottom
+            );
         }
 
         public override void Draw(GameTime gameTime)
@@ -90,11 +95,15 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
             base.Draw(gameTime);
             if (_active)
             {
-                spriteBatch.Draw(CommonResources.whitepixel, new Rectangle(0,0, GameBase.Settings.ScreenWidth, GameBase.Settings.ScreenHeight), CommonResources.TransparentOverlayColor);
+                spriteBatch.Draw(CommonResources.whitepixel,
+                    new Rectangle(0, 0, GameBase.Defaults.ScreenWidth, GameBase.Defaults.ScreenHeight),
+                    CommonResources.TransparentOverlayColor);
                 spriteBatch.Draw(CommonResources.whitepixel, GetHelpRectangleBorder(), CommonResources.TableBodyColor);
-                spriteBatch.Draw(CommonResources.whitepixel, GetHelpRectangle(), CommonResources.TransparentOverlayColor);
+                spriteBatch.Draw(CommonResources.whitepixel, GetHelpRectangle(),
+                    CommonResources.TransparentOverlayColor);
                 DrawHelp(GetHelpRectangle());
             }
+
             spriteBatch.Draw(CommonResources.whitepixel, GetBorderRectangle(), CommonResources.TableBodyColor);
             spriteBatch.Draw(CommonResources.whitepixel, GetContentRectangle(), Color.Black);
             DrawHeader();
@@ -108,17 +117,20 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                 ContentArea.Y - 40,
                 ContentArea.Width,
                 40
-                );
+            );
             spriteBatch.Draw(CommonResources.whitepixel, header, CommonResources.TableBodyColor);
-            spriteBatch.DrawString(CommonResources.fontSmallBold, "Player name", new Vector2(header.X + NameColX, header.Y + HeaderTextY), CommonResources.Borders);
-            spriteBatch.DrawString(CommonResources.fontSmallBold, "Type", new Vector2(header.Right + TypeColX, header.Y + HeaderTextY), CommonResources.Borders);
-            spriteBatch.DrawString(CommonResources.fontSmallBold, "Keys", new Vector2(header.Right + KeysColX, header.Y + HeaderTextY), CommonResources.Borders);
-            spriteBatch.DrawString(CommonResources.fontSmallBold, "Ready", new Vector2(header.Right + ReadyColX, header.Y + HeaderTextY), CommonResources.Borders);
+            spriteBatch.DrawString(CommonResources.fontSmallBold, "Player name",
+                new Vector2(header.X + NameColX, header.Y + HeaderTextY), CommonResources.Borders);
+            spriteBatch.DrawString(CommonResources.fontSmallBold, "Type",
+                new Vector2(header.Right + TypeColX, header.Y + HeaderTextY), CommonResources.Borders);
+            spriteBatch.DrawString(CommonResources.fontSmallBold, "Keys",
+                new Vector2(header.Right + KeysColX, header.Y + HeaderTextY), CommonResources.Borders);
+            spriteBatch.DrawString(CommonResources.fontSmallBold, "Ready",
+                new Vector2(header.Right + ReadyColX, header.Y + HeaderTextY), CommonResources.Borders);
         }
 
         private void DrawPlayers(Rectangle container)
         {
-            
             var y = container.Y + 16;
             for (var i = 0; i < _playerDefinitions.Count; i++)
             {
@@ -129,19 +141,21 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                 {
                     spriteBatch.Draw(CommonResources.whitepixel, new Rectangle(
                         container.X, y - 7, container.Width, 40
-                        ), CommonResources.Background );
+                    ), CommonResources.Background);
                 }
 
                 // drawing currently editing player name
                 if (_editingName && SelectedId == i)
                 {
                     var measure = CommonResources.fontMedium.MeasureString(_editingNameTemp);
-                    spriteBatch.DrawString(CommonResources.fontMedium, _editingNameTemp + "_", new Vector2(container.X + NameColX, y),
+                    spriteBatch.DrawString(CommonResources.fontMedium, _editingNameTemp + "_",
+                        new Vector2(container.X + NameColX, y),
                         nameColor);
-                    spriteBatch.DrawString(CommonResources.fontMedium, "_", new Vector2(container.X + NameColX + measure.X, y),
+                    spriteBatch.DrawString(CommonResources.fontMedium, "_",
+                        new Vector2(container.X + NameColX + measure.X, y),
                         Color.White);
                 }
-                    // drawing selected name column 
+                // drawing selected name column 
                 else if (SelectedId == i && _editingField == 0 && !_editingName && Active)
                 {
                     var measureParenthesis = CommonResources.fontMedium.MeasureString("[");
@@ -151,9 +165,10 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                     spriteBatch.DrawString(CommonResources.fontMedium, p.Name,
                         new Vector2(container.X + NameColX + measureParenthesis.X + 5, y), nameColor);
                     spriteBatch.DrawString(CommonResources.fontMedium, "]",
-                        new Vector2(container.X + NameColX + measureParenthesis.X + measure.X + 10, y), CreateColorTransition(nameColor));
+                        new Vector2(container.X + NameColX + measureParenthesis.X + measure.X + 10, y),
+                        CreateColorTransition(nameColor));
                 }
-                    // drawing name normally 
+                // drawing name normally 
                 else
                 {
                     spriteBatch.DrawString(CommonResources.fontMedium, p.Name,
@@ -174,16 +189,15 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                     spriteBatch.DrawString(CommonResources.fontSmall, "]",
                         new Vector2(container.Right + TypeColX + measureParenthesis.X + measure.X + 10, y),
                         CreateColorTransition(CommonResources.Borders));
-
-                } 
-                    // draw editing type
-                else if(_editingField == 1 && _editingType && SelectedId == i)
+                }
+                // draw editing type
+                else if (_editingField == 1 && _editingType && SelectedId == i)
                 {
                     var playerTypeStringTemp = _editingTypeTemp ? "Computer" : "Human";
                     spriteBatch.DrawString(CommonResources.fontSmall, playerTypeStringTemp,
                         new Vector2(container.Right + TypeColX, y), nameColor);
-                }    
-                    //drawing normally player type
+                }
+                //drawing normally player type
                 else
                 {
                     spriteBatch.DrawString(CommonResources.fontSmall, playerTypeString,
@@ -204,8 +218,8 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                         new Vector2(container.Right + KeysColX + measureParenthesis.X + measure.X + 10, y),
                         CreateColorTransition(CommonResources.Borders));
                 }
-                    // draw currently editing keys
-                else if (_editingField == 2 && SelectedId == i && _editingKeys == true)
+                // draw currently editing keys
+                else if (_editingField == 2 && SelectedId == i && _editingKeys)
                 {
                     string key1, key2;
                     Color color1, color2;
@@ -223,6 +237,7 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                         color2 = nameColor;
                         color1 = CommonResources.Borders;
                     }
+
                     var measure1 = CommonResources.fontSmall.MeasureString(key1);
                     var measure2 = CommonResources.fontSmall.MeasureString(key2);
                     var measureComma = CommonResources.fontSmall.MeasureString(",");
@@ -237,13 +252,16 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                         new Vector2(container.Right + KeysColX + measure1.X + measure2.X + 6 + measureComma.X, y),
                         color2);
                 }
-                    // drawing keys normally
+                // drawing keys normally
                 else
                 {
-                    spriteBatch.DrawString(CommonResources.fontSmall, p.Left + "," + p.Right, new Vector2(container.Right + KeysColX, y + 4), CommonResources.Borders);    
+                    spriteBatch.DrawString(CommonResources.fontSmall, p.Left + "," + p.Right,
+                        new Vector2(container.Right + KeysColX, y + 4), CommonResources.Borders);
                 }
-                
-                spriteBatch.Draw(CommonResources.kurveBody, new Rectangle(container.Right + ReadyColX + 14, y + 7, 13 , 13), p.Active ? CommonResources.MainColor:CommonResources.TableBodyColor);
+
+                spriteBatch.Draw(CommonResources.kurveBody,
+                    new Rectangle(container.Right + ReadyColX + 14, y + 7, 13, 13),
+                    p.Active ? CommonResources.MainColor : CommonResources.TableBodyColor);
                 y += PlayerRowSpacing;
             }
         }
@@ -256,6 +274,7 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                 HandleEditKeysInput(input);
                 return;
             }
+
             if (_editingName)
             {
                 HandleEditNameInput(input);
@@ -267,28 +286,30 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                 HandleEditTypeInput(input);
                 return;
             }
-            
+
             HandleListInput(input);
         }
 
         private void HandleListInput(InputState input)
         {
-            PlayerIndex player;
-            if (input.IsMenuDown(_screen.ControllingPlayer.Value))
+            var controllingPlayer = _screen.ControllingPlayer ?? PlayerIndex.One;
+            if (input.IsMenuDown(controllingPlayer))
             {
                 SelectedId++;
                 //_editingField = 0;
                 _editingKeys = false;
                 _editingName = false;
             }
-            if (input.IsMenuUp(_screen.ControllingPlayer.Value))
+
+            if (input.IsMenuUp(controllingPlayer))
             {
                 SelectedId--;
                 //_editingField = 0;
                 _editingKeys = false;
                 _editingName = false;
             }
-            if (input.IsMenuCancel(_screen.ControllingPlayer.Value, out player))
+
+            if (input.IsMenuCancel(controllingPlayer, out _))
             {
                 SaveSettings();
                 Active = !Active;
@@ -299,7 +320,7 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                 SelectedId = -1;
             }
 
-            if (input.IsNewKeyPress(Keys.A, _screen.ControllingPlayer, out player))
+            if (input.IsNewKeyPress(Keys.A, _screen.ControllingPlayer, out _))
             {
                 if (_playerDefinitions[SelectedId].IsAi)
                 {
@@ -312,32 +333,42 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                     _playerDefinitions[SelectedId].Active = true;
                 }
             }
-            if (input.IsNewKeyPress(Keys.P, _screen.ControllingPlayer, out player))
+
+            if (input.IsNewKeyPress(Keys.P, _screen.ControllingPlayer, out _))
             {
-                if (GameBase.Settings.ScreenHeight - YOffset - (((_playerDefinitions.Count + 2) * PlayerRowSpacing)) <= 0) { return; }
-                _playerDefinitions.Add(new PlayerDefinition("New player", Keys.None, Keys.None, 
+                if (GameBase.Defaults.ScreenHeight - YOffset - (((_playerDefinitions.Count + 2) * PlayerRowSpacing)) <=
+                    0)
+                {
+                    return;
+                }
+
+                _playerDefinitions.Add(new PlayerDefinition("New player", Keys.None, Keys.None,
                     Color.FromNonPremultiplied(
-                        GameBase.Settings.Rand.Next(0,255),
-                        GameBase.Settings.Rand.Next(0, 255),
-                        GameBase.Settings.Rand.Next(0, 255),
+                        GameBase.Defaults.Rand.Next(0, 255),
+                        GameBase.Defaults.Rand.Next(0, 255),
+                        GameBase.Defaults.Rand.Next(0, 255),
                         255
-                        )));
+                    )));
                 SelectedId = _playerDefinitions.Count;
             }
-            if (input.IsNewKeyPress(Keys.Delete, _screen.ControllingPlayer, out player))
+
+            if (input.IsNewKeyPress(Keys.Delete, _screen.ControllingPlayer, out _))
             {
                 _playerDefinitions.RemoveAt(SelectedId);
-                SelectedId = (int)MathHelper.Clamp(SelectedId - 1, 0, _playerDefinitions.Count);
+                SelectedId = MathHelper.Clamp(SelectedId - 1, 0, _playerDefinitions.Count);
             }
-            if (input.IsNewKeyPress(Keys.Left, _screen.ControllingPlayer, out player))
+
+            if (input.IsNewKeyPress(Keys.Left, _screen.ControllingPlayer, out _))
             {
-                _editingField = (int) MathHelper.Clamp(_editingField - 1, 0, 2);
+                _editingField = MathHelper.Clamp(_editingField - 1, 0, 2);
             }
-            if (input.IsNewKeyPress(Keys.Right, _screen.ControllingPlayer, out player))
+
+            if (input.IsNewKeyPress(Keys.Right, _screen.ControllingPlayer, out _))
             {
-                _editingField = (int)MathHelper.Clamp(_editingField + 1, 0, 2);
+                _editingField = MathHelper.Clamp(_editingField + 1, 0, 2);
             }
-            if (input.IsNewKeyPress(Keys.Enter, _screen.ControllingPlayer, out player))
+
+            if (input.IsNewKeyPress(Keys.Enter, _screen.ControllingPlayer, out _))
             {
                 switch (_editingField)
                 {
@@ -350,55 +381,56 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                         _editingType = true;
                         break;
                     case 2:
-                        _editingKeysTemp = new Tuple<Keys, Keys>(_playerDefinitions[SelectedId].Left, _playerDefinitions[SelectedId].Right);
+                        _editingKeysTemp = new Tuple<Keys, Keys>(_playerDefinitions[SelectedId].Left,
+                            _playerDefinitions[SelectedId].Right);
                         _editingKeys = true;
                         _editKeysRound = 0;
                         break;
                 }
             }
-            
         }
 
         private void HandleEditNameInput(InputState input)
         {
-            PlayerIndex player;
-
-            if (input.IsNewKeyPress(Keys.Enter, _screen.ControllingPlayer, out player))
+            if (input.IsNewKeyPress(Keys.Enter, _screen.ControllingPlayer, out _))
             {
                 _playerDefinitions[SelectedId].Name = _editingNameTemp;
                 SaveSettings();
                 _editingName = false;
             }
-            if (input.IsNewKeyPress(Keys.Escape, _screen.ControllingPlayer, out player))
+
+            if (input.IsNewKeyPress(Keys.Escape, _screen.ControllingPlayer, out _))
             {
                 _editingName = false;
             }
 
             // deleting
-            if (input.IsNewKeyPress(Keys.Back, _screen.ControllingPlayer, out player))
+            if (input.IsNewKeyPress(Keys.Back, _screen.ControllingPlayer, out _))
             {
                 if (_editingNameTemp.Length >= 1)
                 {
-                    _editingNameTemp = _editingNameTemp.Substring(0, _editingNameTemp.Length - 1);   
+                    _editingNameTemp = _editingNameTemp.Substring(0, _editingNameTemp.Length - 1);
                 }
             }
-            var playerIndex = (int)_screen.ControllingPlayer.Value;
+
+            var playerIndex = (int)(_screen.ControllingPlayer ?? PlayerIndex.One);
             var keyState = input.CurrentKeyboardStates[playerIndex];
             var lastState = input.LastKeyboardStates[playerIndex];
             if (lastState == keyState)
             {
                 return;
             }
+
             if (_lastWrittenKey != Keys.None)
             {
                 _lastWrittenKey = Keys.None;
                 return;
             }
+
             var keys = keyState.GetPressedKeys();
             var uppercase = keys.Where(k => k == Keys.LeftShift || k == Keys.RightShift).FirstOrDefault() != Keys.None;
             foreach (var key in keys)
             {
-
                 if (
                     (key >= Keys.A && key <= Keys.Z) ||
                     (key >= Keys.D0 && key <= Keys.D9) ||
@@ -406,13 +438,14 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                     (key == Keys.OemComma) ||
                     (key == Keys.OemPeriod) ||
                     (key == Keys.OemMinus)
-                    )
+                )
                 {
                     var character = TranslateKeyToString(key);
                     if (!uppercase)
                     {
                         character = character.ToLower();
                     }
+
                     _editingNameTemp += character;
                     _lastWrittenKey = key;
                 }
@@ -421,26 +454,25 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                     _lastWrittenKey = Keys.None;
                 }
             }
-            
         }
 
         private void HandleEditTypeInput(InputState input)
         {
-            PlayerIndex player;
-
-            if (input.IsNewKeyPress(Keys.Enter, _screen.ControllingPlayer, out player))
+            if (input.IsNewKeyPress(Keys.Enter, _screen.ControllingPlayer, out _))
             {
                 _playerDefinitions[SelectedId].IsAi = _editingTypeTemp;
                 _playerDefinitions[SelectedId].Active = _editingTypeTemp;
                 SaveSettings();
                 _editingType = false;
             }
-            if (input.IsNewKeyPress(Keys.Escape, _screen.ControllingPlayer, out player))
+
+            if (input.IsNewKeyPress(Keys.Escape, _screen.ControllingPlayer, out _))
             {
                 _editingType = false;
             }
 
-            if (input.IsNewKeyPress(Keys.Up, _screen.ControllingPlayer, out player) || input.IsNewKeyPress(Keys.Down, _screen.ControllingPlayer, out player))
+            if (input.IsNewKeyPress(Keys.Up, _screen.ControllingPlayer, out _) ||
+                input.IsNewKeyPress(Keys.Down, _screen.ControllingPlayer, out _))
             {
                 _editingTypeTemp = !_editingTypeTemp;
             }
@@ -448,9 +480,7 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
 
         private void HandleEditKeysInput(InputState input)
         {
-            PlayerIndex player;
-
-            if (input.IsNewKeyPress(Keys.Enter, _screen.ControllingPlayer, out player) || _editKeysRound >= 2)
+            if (input.IsNewKeyPress(Keys.Enter, _screen.ControllingPlayer, out _) || _editKeysRound >= 2)
             {
                 _playerDefinitions[SelectedId].Left = _editingKeysTemp.Item1;
                 _playerDefinitions[SelectedId].Right = _editingKeysTemp.Item2;
@@ -458,18 +488,19 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                 _editKeysRound = 0;
                 _editingKeys = false;
             }
-            if (input.IsNewKeyPress(Keys.Escape, _screen.ControllingPlayer, out player))
+
+            if (input.IsNewKeyPress(Keys.Escape, _screen.ControllingPlayer, out _))
             {
                 _editingKeys = false;
                 _editKeysRound = 0;
             }
 
-            var playerIndex = (int)_screen.ControllingPlayer.Value;
+            var playerIndex = (int)(_screen.ControllingPlayer ?? PlayerIndex.One);
             var keyState = input.CurrentKeyboardStates[playerIndex];
-           
+
             var keys = keyState.GetPressedKeys();
             Keys currentKey = keys.Where(key => !_forbiddenControls.Contains(key)).FirstOrDefault();
-            if (currentKey == Keys.None || currentKey == null) return;
+            if (currentKey == Keys.None) return;
             if (_editKeysRound == 0)
             {
                 _editingKeysTemp = new Tuple<Keys, Keys>(currentKey, _editingKeysTemp.Item2);
@@ -481,6 +512,7 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                 {
                     return;
                 }
+
                 _editingKeysTemp = new Tuple<Keys, Keys>(_editingKeysTemp.Item1, currentKey);
                 _editKeysRound++;
             }
@@ -488,34 +520,41 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
 
         private void DrawHelp(Rectangle container)
         {
-            spriteBatch.DrawString(CommonResources.fontSmall, "[Up, Down] Select player", new Vector2(container.X + 10, container.Y + 10), CommonResources.Borders);
-            spriteBatch.DrawString(CommonResources.fontSmall, "[Left, Right] Select property", new Vector2(container.X + 10, container.Y + 35), CommonResources.Borders);
-            spriteBatch.DrawString(CommonResources.fontSmall, "[Enter] Edit", new Vector2(container.X + 10, container.Y + 60), CommonResources.Borders);
+            spriteBatch.DrawString(CommonResources.fontSmall, "[Up, Down] Select player",
+                new Vector2(container.X + 10, container.Y + 10), CommonResources.Borders);
+            spriteBatch.DrawString(CommonResources.fontSmall, "[Left, Right] Select property",
+                new Vector2(container.X + 10, container.Y + 35), CommonResources.Borders);
+            spriteBatch.DrawString(CommonResources.fontSmall, "[Enter] Edit",
+                new Vector2(container.X + 10, container.Y + 60), CommonResources.Borders);
             //spriteBatch.DrawString(CommonResources.fontSmall, "[K] Change key bindings", new Vector2(container.X + 10, container.Y + 60), CommonResources.Borders);
-            spriteBatch.DrawString(CommonResources.fontSmall, "[A] De/activate AI", new Vector2(container.X + 10, container.Y + 85), CommonResources.Borders);
-            spriteBatch.DrawString(CommonResources.fontSmall, "[P] Add new player", new Vector2(container.X + 10, container.Y + 110), CommonResources.Borders);
-            spriteBatch.DrawString(CommonResources.fontSmall, "[Del] Delete player", new Vector2(container.X + 10, container.Y + 135), CommonResources.Borders);
-            spriteBatch.DrawString(CommonResources.fontSmall, "[Esc] Back", new Vector2(container.X + 10, container.Y + 160), CommonResources.Borders);
+            spriteBatch.DrawString(CommonResources.fontSmall, "[A] De/activate AI",
+                new Vector2(container.X + 10, container.Y + 85), CommonResources.Borders);
+            spriteBatch.DrawString(CommonResources.fontSmall, "[P] Add new player",
+                new Vector2(container.X + 10, container.Y + 110), CommonResources.Borders);
+            spriteBatch.DrawString(CommonResources.fontSmall, "[Del] Delete player",
+                new Vector2(container.X + 10, container.Y + 135), CommonResources.Borders);
+            spriteBatch.DrawString(CommonResources.fontSmall, "[Esc] Back",
+                new Vector2(container.X + 10, container.Y + 160), CommonResources.Borders);
         }
 
         private Rectangle GetHelpRectangle()
         {
-             return new Rectangle(
-                ContentArea.X +1,
+            return new Rectangle(
+                ContentArea.X + 1,
                 ContentArea.Y - 249,
-                ContentArea.Width -2,
+                ContentArea.Width - 2,
                 188
-            ); 
+            );
         }
 
         private Rectangle GetHelpRectangleBorder()
         {
             return new Rectangle(
-               ContentArea.X,
-               ContentArea.Y - 250,
-               ContentArea.Width ,
-               190
-           );
+                ContentArea.X,
+                ContentArea.Y - 250,
+                ContentArea.Width,
+                190
+            );
         }
 
         private Rectangle GetBorderRectangle()
@@ -525,17 +564,17 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                 ContentArea.Y,
                 ContentArea.Width,
                 (int)(_playerDefinitions.Count * 42f)
-                );
+            );
         }
 
         private Rectangle GetContentRectangle()
         {
             return new Rectangle(
-                ContentArea.X +1,
-                ContentArea.Y +1,
-                ContentArea.Width -2,
-                (int)(_playerDefinitions.Count * 42f) -2
-                );
+                ContentArea.X + 1,
+                ContentArea.Y + 1,
+                ContentArea.Width - 2,
+                (int)(_playerDefinitions.Count * 42f) - 2
+            );
         }
 
         public void SaveSettings()

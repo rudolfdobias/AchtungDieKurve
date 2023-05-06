@@ -97,7 +97,7 @@ namespace AchtungDieKurve.Sound
        public void PlayRandomWeak()
         {
 
-            int r = GameBase.Settings.Rand.Next(crashLight.Count);
+            int r = GameBase.Defaults.Rand.Next(crashLight.Count);
 
             crashLight[r].Play();
            
@@ -106,13 +106,13 @@ namespace AchtungDieKurve.Sound
 
        public void PlayRandomModerate()
        {
-           int r = GameBase.Settings.Rand.Next(crashMid.Count);
+           int r = GameBase.Defaults.Rand.Next(crashMid.Count);
 
            crashMid[r].Play();
        }
        public void PlayRandomHeavy()
        {
-           int r = GameBase.Settings.Rand.Next(crashHeavy.Count);
+           int r = GameBase.Defaults.Rand.Next(crashHeavy.Count);
 
            crashHeavy[r].Play();
        }

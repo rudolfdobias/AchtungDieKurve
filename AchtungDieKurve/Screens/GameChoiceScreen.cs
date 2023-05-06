@@ -41,39 +41,41 @@ namespace AchtungDieKurve
         public GameChoiceScreen()
             : base("Select game type")
         {
-            context = GameBase.Settings;
+            context = GameBase.Defaults;
 
             classic = new MenuEntry("Classic");
-            reloaded = new MenuEntry("Reloaded");
+            reloaded = new MenuEntry("Boosted");
 
 
-            MenuEntry back = new MenuEntry("Back...");
+            MenuEntry s1 = new MenuEntry("");
+            MenuEntry back = new MenuEntry("Back");
 
 
-            classic.Selected += startClassicSelected;
-            reloaded.Selected += startReloadedSelected;
+            classic.Selected += StartClassicSelected;
+            reloaded.Selected += StartReloadedSelected;
 
             back.Selected += OnCancel;
 
 
             MenuEntries.Add(reloaded);
             MenuEntries.Add(classic);
+            //MenuEntries.Add(s1);
             MenuEntries.Add(back);
         }
 
 
-        void startClassicSelected(object sender, PlayerIndexEventArgs e)
+        void StartClassicSelected(object sender, PlayerIndexEventArgs e)
         {
-            GameBase.Settings.PowerupsEnabled = false;
+            GameBase.Defaults.PowerupsEnabled = false;
 
             ScreenManager.AddScreen(new GameConfigScreen(), e.PlayerIndex);
             /* LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
                                new GameConfigScreen());*/
         }
 
-        void startReloadedSelected(object sender, PlayerIndexEventArgs e)
+        void StartReloadedSelected(object sender, PlayerIndexEventArgs e)
         {
-            GameBase.Settings.PowerupsEnabled = true;
+            GameBase.Defaults.PowerupsEnabled = true;
 
             ScreenManager.AddScreen(new GameConfigScreen(), e.PlayerIndex);
             /*LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
@@ -81,24 +83,6 @@ namespace AchtungDieKurve
         }
 
         #endregion
-
-        #region Handle Input
-
-        public override void HandleInput(InputState input)
-        {
-            base.HandleInput(input);
-        }
-
-        public override void Update(GameTime gameTime, bool otherScreenHasFocus, bool coveredByOtherScreen)
-        {
-            base.Update(gameTime, otherScreenHasFocus, coveredByOtherScreen);
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
-            base.Draw(gameTime);
-        }
-
-        #endregion
+        
     }
 }

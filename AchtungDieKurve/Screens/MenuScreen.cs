@@ -76,19 +76,13 @@ namespace AchtungDieKurve
             // Move to the previous menu entry?
             if (input.IsMenuUp(ControllingPlayer))
             {
-                selectedEntry--;
-
-                if (selectedEntry < 0)
-                    selectedEntry = menuEntries.Count - 1;
+                SelectPrevious(input);
             }
 
             // Move to the next menu entry?
             if (input.IsMenuDown(ControllingPlayer))
             {
-                selectedEntry++;
-
-                if (selectedEntry >= menuEntries.Count)
-                    selectedEntry = 0;
+               SelectNext(input);
             }
 
             // Accept or cancel the menu? We pass in our ControllingPlayer, which may
@@ -106,6 +100,31 @@ namespace AchtungDieKurve
             {
                 OnCancel(playerIndex);
             }
+        }
+
+        private void SelectNext(InputState input)
+        {
+            selectedEntry++;
+
+            if (selectedEntry >= menuEntries.Count)
+                selectedEntry = 0;
+            
+            // skip empty
+            if (string.IsNullOrWhiteSpace(MenuEntries[selectedEntry].Text)) 
+                // recursion!
+                SelectNext(input);
+        }
+
+        private void SelectPrevious(InputState input)
+        {
+            selectedEntry--;
+            if (selectedEntry < 0)
+                selectedEntry = menuEntries.Count - 1;
+                
+            // skip empty
+            if (string.IsNullOrWhiteSpace(MenuEntries[selectedEntry].Text)) 
+                // recursion!
+                SelectPrevious(input);
         }
 
 

@@ -8,12 +8,14 @@
 #endregion
 
 #region Using Statements
+
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+
 #endregion
 
-namespace AchtungDieKurve
+namespace AchtungDieKurve.Screens
 {
     /// <summary>
     /// The loading screen coordinates transitions between the menu system and the

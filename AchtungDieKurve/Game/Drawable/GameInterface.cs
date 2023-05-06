@@ -28,7 +28,7 @@ namespace AchtungDieKurve.Game.Drawable
         {
             get
             {
-                return new Rectangle(0,0,GameBase.Settings.ScreenWidth, GameBase.Settings.ScreenHeight);
+                return new Rectangle(0,0,GameBase.Defaults.ScreenWidth, GameBase.Defaults.ScreenHeight);
             }
         }
 

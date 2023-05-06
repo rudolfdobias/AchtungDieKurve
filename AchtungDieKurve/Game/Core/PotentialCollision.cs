@@ -6,22 +6,22 @@ namespace AchtungDieKurve.Game.Core
     {
         public CollidableShape Type;
         public ICollidable Owner;
-        public CollisionCondition CollisionCondition;
+        public CollisionConditionDelegate CollisionConditionDelegate;
         public Rectangle Bounds;
         private Vector2 segment;
         private bool isSegment;
 
-        public PotentialCollision(ICollidable owner, Rectangle bounds, CollidableShape type, CollisionCondition anotherCondition)
+        public PotentialCollision(ICollidable owner, Rectangle bounds, CollidableShape type, CollisionConditionDelegate anotherConditionDelegate)
         {
             Owner = owner;
             Bounds = bounds;
             Type= type;
-            CollisionCondition = anotherCondition;
+            CollisionConditionDelegate = anotherConditionDelegate;
         }
 
         public PotentialCollision CreateSegment(Vector2 position)
         {
-            return new PotentialCollision(Owner, Bounds, Type, CollisionCondition).SetSetgment(position);
+            return new PotentialCollision(Owner, Bounds, Type, CollisionConditionDelegate).SetSetgment(position);
         }
 
         public PotentialCollision SetSetgment(Vector2 position)
@@ -49,5 +49,5 @@ namespace AchtungDieKurve.Game.Core
 
     }
 
-    public delegate bool CollisionCondition(ICollidable k, PotentialCollision collidingWith, GameTime gameTime);
+    public delegate bool CollisionConditionDelegate(ICollidable k, PotentialCollision collidingWith, GameTime gameTime);
 }

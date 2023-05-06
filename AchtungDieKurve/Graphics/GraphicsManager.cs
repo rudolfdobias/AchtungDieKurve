@@ -11,9 +11,10 @@
 
         public void Reset()
         {
-            SetFullScreen(false);
             SetDisplayMode(1920, 1080);
+            SetFullScreen(true);
             SetScale();
+            Apply();
         }
 
         public void SetScale(float scale = 1)

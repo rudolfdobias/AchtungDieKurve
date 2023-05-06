@@ -1,17 +1,21 @@
 #region File Description
+
 //-----------------------------------------------------------------------------
 // InputState.cs
 //
 // Microsoft XNA Community Game Platform
 // Copyright (C) Microsoft Corporation. All rights reserved.
 //-----------------------------------------------------------------------------
+
 #endregion
 
 #region Using Statements
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using System.Collections.Generic;
+
 #endregion
 
 namespace AchtungDieKurve
@@ -44,7 +48,6 @@ namespace AchtungDieKurve
 
         #region Initialization
 
-
         /// <summary>
         /// Constructs a new input state.
         /// </summary>
@@ -59,11 +62,9 @@ namespace AchtungDieKurve
             GamePadWasConnected = new bool[MaxInputs];
         }
 
-
         #endregion
 
         #region Public Methods
-
 
         /// <summary>
         /// Reads the latest state of the keyboard and gamepad.
@@ -103,7 +104,7 @@ namespace AchtungDieKurve
         /// is detected, the output playerIndex reports which player pressed it.
         /// </summary>
         public bool IsNewKeyPress(Keys key, PlayerIndex? controllingPlayer,
-                                            out PlayerIndex playerIndex)
+            out PlayerIndex playerIndex)
         {
             if (controllingPlayer.HasValue)
             {
@@ -133,7 +134,7 @@ namespace AchtungDieKurve
         /// is detected, the output playerIndex reports which player pressed it.
         /// </summary>
         public bool IsNewButtonPress(Buttons button, PlayerIndex? controllingPlayer,
-                                                     out PlayerIndex playerIndex)
+            out PlayerIndex playerIndex)
         {
             if (controllingPlayer.HasValue)
             {
@@ -163,7 +164,7 @@ namespace AchtungDieKurve
         /// is detected, the output playerIndex reports which player pressed it.
         /// </summary>
         public bool IsMenuSelect(PlayerIndex? controllingPlayer,
-                                 out PlayerIndex playerIndex)
+            out PlayerIndex playerIndex)
         {
             return IsNewKeyPress(Keys.Space, controllingPlayer, out playerIndex) ||
                    IsNewKeyPress(Keys.Enter, controllingPlayer, out playerIndex) ||
@@ -179,7 +180,7 @@ namespace AchtungDieKurve
         /// is detected, the output playerIndex reports which player pressed it.
         /// </summary>
         public bool IsMenuCancel(PlayerIndex? controllingPlayer,
-                                 out PlayerIndex playerIndex)
+            out PlayerIndex playerIndex)
         {
             return IsNewKeyPress(Keys.Escape, controllingPlayer, out playerIndex) ||
                    IsNewButtonPress(Buttons.B, controllingPlayer, out playerIndex) ||
@@ -230,7 +231,6 @@ namespace AchtungDieKurve
                    IsNewButtonPress(Buttons.Back, controllingPlayer, out playerIndex) ||
                    IsNewButtonPress(Buttons.Start, controllingPlayer, out playerIndex);
         }
-
 
         #endregion
     }

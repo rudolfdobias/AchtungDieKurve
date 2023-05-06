@@ -114,7 +114,7 @@ namespace AchtungDieKurve.Game.Core
         public void Draw(GameTime gameTime)
         {
 
-            if (GameBase.Settings.DebugCollisions == false)
+            if (GameBase.Defaults.DebugCollisions == false)
                 return;
             // draw grid
             for (int x = 1; x <= _ratioX; x++)

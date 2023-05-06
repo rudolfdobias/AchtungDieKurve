@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using AchtungDieKurve.Game;
 using AchtungDieKurve.Game.Drawable;
+using AchtungDieKurve.Screens;
 
 namespace AchtungDieKurve
 {
@@ -47,7 +48,7 @@ namespace AchtungDieKurve
 
         public ScoreScreen(PlayersManager players)
         { 
-            context=GameBase.Settings;
+            context=GameBase.Defaults;
             this.players = players;
         }
 
@@ -78,7 +79,7 @@ namespace AchtungDieKurve
 
             continue_measure = smallfont.MeasureString(presscontinue);
             boss_measure = smallfont.MeasureString("BOSS");
-            looser_measure = smallfont.MeasureString("LOOOSER!");
+            looser_measure = smallfont.MeasureString("LOSER");
             title_measure = bigfont.MeasureString(gameover);
 
         }
@@ -180,7 +181,7 @@ namespace AchtungDieKurve
                 {
                     SB.DrawString(
                          smallfont,
-                         "LOOOSER!",
+                         "LOSER",
                          new Vector2((int)sq_x + (sq / 2 - looser_measure.X / 2), (int)sq_y + (sq / 2 - fontmeasure.Y / 2) + looser_measure.Y + 10),
                          Color.Black
                          );
@@ -191,7 +192,7 @@ namespace AchtungDieKurve
 
             
 
-            SB.DrawString(ScreenManager.Font,"Game over!",
+            SB.DrawString(ScreenManager.Font,"Aftermath!",
                 new Vector2(((int)context.ScreenWidth/2)-(title_measure.X/2),20),
                 Color.FromNonPremultiplied(255,160,0,255)
                 );

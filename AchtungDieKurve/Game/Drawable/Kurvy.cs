@@ -123,7 +123,7 @@ namespace AchtungDieKurve.Game.Drawable
 
         private void DrawDebug()
         {
-            if (false == GameBase.Settings.DebugCoordinates)
+            if (false == GameBase.Defaults.DebugCoordinates)
                 return;
 
             var y = ContentArea.Y + 10;

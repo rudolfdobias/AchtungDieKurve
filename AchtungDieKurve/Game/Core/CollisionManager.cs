@@ -7,15 +7,14 @@ namespace AchtungDieKurve.Game.Core
 {
     public class CollisionManager
     {
-        
-        protected GridRegister Register;
-        protected SpriteBatch Sb;
+        private readonly GridRegister _register;
+        private readonly SpriteBatch _sb;
 
         public CollisionManager(SpriteBatch sb, ref GridRegister register)
         {
-            Register = register;
+            _register = register;
             Reset();
-            Sb = sb;
+            _sb = sb;
         }
 
         public void Carry(ICollidable entity, GameTime gameTime)
@@ -25,22 +24,22 @@ namespace AchtungDieKurve.Game.Core
             
             if (entity.CollisionBounds != null)
             {
-                Register.Remember(entity);
+                _register.Remember(entity);
             }
 
-            Register.Find(entity, gameTime, FindCollision);
+            _register.Find(entity, gameTime, FindCollision);
         }
 
         public void DebugDraw(ICollidable entity, GameTime gameTime)
         {
-            if (GameBase.Settings.DebugCollisions == false)
+            if (GameBase.Defaults.DebugCollisions == false)
                 return;
 
-            Register.Draw(gameTime);
+            _register.Draw(gameTime);
             if (entity.CollisionBounds == null) { return; }
-            Register.Find(entity, gameTime, DrawCollisionCandidates);
+            _register.Find(entity, gameTime, DrawCollisionCandidates);
 
-            Register.DrawRadius(entity);
+            _register.DrawRadius(entity);
 
         }
 
@@ -52,7 +51,7 @@ namespace AchtungDieKurve.Game.Core
             {
                 case CollidableShape.Rectangle:
                     
-                    if (company.Bounds.Intersects(entity.CollisionBounds.Bounds) && company.CollisionCondition(entity, company, gameTime))
+                    if (company.Bounds.Intersects(entity.CollisionBounds.Bounds) && company.CollisionConditionDelegate(entity, company, gameTime))
                     {
                         entity.OnCollisionWith(company.Owner, gameTime);
                         company.Owner.WasHit(entity, gameTime);
@@ -60,7 +59,7 @@ namespace AchtungDieKurve.Game.Core
                     }
                     break;
                 case CollidableShape.Circle:
-                    break;
+                //break;
                 default:
                     throw new NotImplementedException("Cannot detect collision for type " + company.Type);
             }
@@ -72,18 +71,18 @@ namespace AchtungDieKurve.Game.Core
             float multiplier = 1;
             var distance = Vector2.Distance(new Vector2(entity.CollisionBounds.Bounds.Center.X, entity.CollisionBounds.Bounds.Center.Y), new Vector2(company.Bounds.Center.X, company.Bounds.Center.Y));
             if (distance > 0) {
-                float ceil = 2 * Register.Raster;
+                float ceil = 2 * _register.Raster;
                 var one = ceil / 200;
                 multiplier = distance / one;
             }
 
             if (company.Owner is Powerup)
             {
-                Sb.Draw(CommonResources.starEffect, company.Bounds, Color.FromNonPremultiplied(240, 240, 255, 200 - (int)multiplier));
+                _sb.Draw(CommonResources.starEffect, company.Bounds, Color.FromNonPremultiplied(240, 240, 255, 200 - (int)multiplier));
             }
             else
             {
-                Sb.Draw(company.Owner.BodyTexture, company.Bounds, Color.FromNonPremultiplied(255, 255, 255, 200 - (int)multiplier));    
+                _sb.Draw(company.Owner.BodyTexture, company.Bounds, Color.FromNonPremultiplied(255, 255, 255, 200 - (int)multiplier));    
             }
             
             return false;
@@ -91,7 +90,7 @@ namespace AchtungDieKurve.Game.Core
 
         public void Reset()
         {
-            Register.Reset();
+            _register.Reset();
         }
 
     }

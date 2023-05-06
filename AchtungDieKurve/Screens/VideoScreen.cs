@@ -119,27 +119,27 @@ namespace AchtungDieKurve
             {
                 GameBase.Graphics.PreferredBackBufferWidth = 2560;
                 GameBase.Graphics.PreferredBackBufferHeight = 1440;
-                GameBase.Settings.DefaultDiameter = 16;
-                GameBase.Settings.DefaultSpeed = 3f;
+                GameBase.Defaults.DefaultDiameter = 16;
+                GameBase.Defaults.DefaultSpeed = 3f;
             }
             else
             
             {
                 GameBase.Graphics.PreferredBackBufferWidth = 1920;
                 GameBase.Graphics.PreferredBackBufferHeight = 1080;
-                GameBase.Settings.DefaultDiameter = 8;
-                GameBase.Settings.DefaultSpeed = 2.2f                                   ;
+                GameBase.Defaults.DefaultDiameter = 8;
+                GameBase.Defaults.DefaultSpeed = 2.2f                                   ;
             }
             GameBase.Graphics.ApplyChanges();
             if (GameBase.Graphics.IsFullScreen)
             {
-                GameBase.Settings.ScreenWidth = GameBase.Graphics.GraphicsDevice.DisplayMode.Width;
-                GameBase.Settings.ScreenHeight = GameBase.Graphics.GraphicsDevice.DisplayMode.Height;
+                GameBase.Defaults.ScreenWidth = GameBase.Graphics.GraphicsDevice.DisplayMode.Width;
+                GameBase.Defaults.ScreenHeight = GameBase.Graphics.GraphicsDevice.DisplayMode.Height;
             }
             else
             {
-                GameBase.Settings.ScreenWidth = GameBase.Graphics.GraphicsDevice.Viewport.Width;
-                GameBase.Settings.ScreenHeight = GameBase.Graphics.GraphicsDevice.Viewport.Height;
+                GameBase.Defaults.ScreenWidth = GameBase.Graphics.GraphicsDevice.Viewport.Width;
+                GameBase.Defaults.ScreenHeight = GameBase.Graphics.GraphicsDevice.Viewport.Height;
             }
             
             SetMenuEntryText();

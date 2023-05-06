@@ -26,18 +26,18 @@ namespace AchtungDieKurve.Game.Drawable
             _container = container;
             _register = register;
             _gameplayScreen = gameplayScreen;
-            _random = new Random(GameBase.Settings.Rand.Next(int.MinValue, int.MaxValue));
+            _random = new Random(GameBase.Defaults.Rand.Next(int.MinValue, int.MaxValue));
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (!GameBase.Settings.PowerupsEnabled)
+            if (!GameBase.Defaults.PowerupsEnabled)
             {
                 return;
             }
 
             base.Update(gameTime);
-            if (_random.NextDouble() < GameBase.Settings.PowerupProbability)
+            if (_random.NextDouble() < GameBase.Defaults.PowerupProbability)
             {
                 var powerup = GetRandomPowerup();
                 if (powerup != null)

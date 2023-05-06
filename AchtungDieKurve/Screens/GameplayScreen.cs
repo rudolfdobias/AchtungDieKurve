@@ -65,7 +65,7 @@ namespace AchtungDieKurve.Screens
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
             // context instance
-            _context = GameBase.Settings;
+            _context = GameBase.Defaults;
 
             _playersInfo = players;
             Camera = new Camera2D {Locked = true};

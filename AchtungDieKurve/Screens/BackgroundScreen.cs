@@ -53,10 +53,6 @@ namespace AchtungDieKurve
         /// </summary>
         public override void LoadContent()
         {
-         /*   if (content == null)
-                content = new ContentManager(ScreenManager.Game.Content, "Content");
-
-            copyfont  = content.Load<SpriteFont>("copyfont");*/
 
         }
 

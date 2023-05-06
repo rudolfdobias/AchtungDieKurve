@@ -38,8 +38,8 @@ namespace AchtungDieKurve.Game
         public void AddPlayer(PlayerDefinition definition, IContainer container)
         {
             Kurve k = definition.IsAi
-                ? new AiPlayer(GameBase.Settings, definition.Left, definition.Right, definition.Color, container)
-                : new Player(GameBase.Settings, definition.Left, definition.Right, definition.Color, container);
+                ? new AiPlayer(GameBase.Defaults, definition.Left, definition.Right, definition.Color, container)
+                : new Player(GameBase.Defaults, definition.Left, definition.Right, definition.Color, container);
 
             k.Death += PlayerDeath;
             k.Start += PlayerStart;
@@ -51,7 +51,7 @@ namespace AchtungDieKurve.Game
         private void PlayerStart(Kurve k)
         {
             _living++;
-            GameBase.Settings.GameGoal += GameBase.Settings.GoalPlusPerPlayer;
+            GameBase.Defaults.GameGoal += GameBase.Defaults.GoalPlusPerPlayer;
         }
 
         public void AddPlayers(List<PlayerDefinition> list, IContainer container)
@@ -97,7 +97,7 @@ namespace AchtungDieKurve.Game
         public void SetAndStart()
         {
             _living = 0;
-            GameBase.Settings.GameGoal = 0;
+            GameBase.Defaults.GameGoal = 0;
             Reset();
         }
 
@@ -110,7 +110,7 @@ namespace AchtungDieKurve.Game
 
             var candidates = (
                 from w in Worms
-                where w.Score >= GameBase.Settings.GameGoal
+                where w.Score >= GameBase.Defaults.GameGoal
                 group w by w.Score into g
                 orderby g.Key descending
                 select g

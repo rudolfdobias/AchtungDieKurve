@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics">
 	<Asset Type="Graphics:FontDescription">
-		<FontName>Oxanium ExtraLight</FontName>
+		<FontName>Staatliches</FontName>
 		<Size>23</Size>
-		<Spacing>2</Spacing>
+		<Spacing>3</Spacing>
 		<Style>Regular</Style>
 		<CharacterRegions>
 			<CharacterRegion>
