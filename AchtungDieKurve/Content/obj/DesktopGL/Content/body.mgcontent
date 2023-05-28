@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/rudad/Code/AchtungDieKurve/AchtungDieKurve/Content/body.png</SourceFile>
-  <SourceTime>2023-05-05T17:25:45.9815201+02:00</SourceTime>
-  <DestFile>C:/Users/rudad/Code/AchtungDieKurve/AchtungDieKurve/Content/bin/DesktopGL/Content/body.xnb</DestFile>
-  <DestTime>2023-05-06T17:56:44.1980311+02:00</DestTime>
+  <SourceFile>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/body.png</SourceFile>
+  <SourceTime>2019-03-23T21:37:41.7524171+01:00</SourceTime>
+  <DestFile>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/bin/DesktopGL/Content/body.xnb</DestFile>
+  <DestTime>2023-05-13T12:06:05.9766326+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2020-08-10T18:17:54+02:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

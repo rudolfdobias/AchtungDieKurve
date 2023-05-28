@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/rudad/Code/AchtungDieKurve/AchtungDieKurve/Content/Crashes/weak/7.wav</SourceFile>
-  <SourceTime>2023-05-05T17:25:45.8956525+02:00</SourceTime>
-  <DestFile>C:/Users/rudad/Code/AchtungDieKurve/AchtungDieKurve/Content/bin/DesktopGL/Content/Crashes/weak/7.xnb</DestFile>
-  <DestTime>2023-05-05T17:28:31.0509595+02:00</DestTime>
+  <SourceFile>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/Crashes/weak/7.wav</SourceFile>
+  <SourceTime>2019-03-23T20:48:11.7488754+01:00</SourceTime>
+  <DestFile>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/bin/DesktopGL/Content/Crashes/weak/7.xnb</DestFile>
+  <DestTime>2023-05-13T12:06:08.2457132+02:00</DestTime>
   <Importer>WavImporter</Importer>
   <ImporterTime>2020-08-10T18:17:54+02:00</ImporterTime>
   <Processor>SoundEffectProcessor</Processor>

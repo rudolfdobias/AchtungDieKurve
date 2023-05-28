@@ -65,9 +65,9 @@ namespace AchtungDieKurve.Game.Drawable
             // black subRectangle covering the placement, creates a border effect
             spriteBatch.Draw(CommonResources.whitepixel, new Rectangle(placement.X + 3, placement.Y + 3, 42, 42),
                 CommonResources.Background);
-            var scorePlacement = Helper.CenterText(CommonResources.fontSmaller, kurva.Score.ToString(), placement);
+            var scorePlacement = Helper.CenterText(CommonResources.fontMedium, kurva.Score.ToString(), placement);
             spriteBatch.DrawString(
-                CommonResources.fontSmaller,
+                CommonResources.fontMedium,
                 kurva.Score.ToString(),
                 scorePlacement,
                 Color.White);
@@ -78,9 +78,9 @@ namespace AchtungDieKurve.Game.Drawable
             var goalText = GameBase.Defaults.GameGoal.ToString();
             var divisionBar = new Rectangle(placement.X, placement.Y, placement.Width, 1);
             spriteBatch.Draw(CommonResources.whitepixel, divisionBar, _goalBarColor);
-            var textPlacement = Helper.CenterText(CommonResources.fontSmaller, goalText, placement);
+            var textPlacement = Helper.CenterText(CommonResources.fontMedium, goalText, placement);
             spriteBatch.DrawString(
-                CommonResources.fontSmaller,
+                CommonResources.fontMedium,
                 goalText,
                 textPlacement,
                 _goalTextColor);

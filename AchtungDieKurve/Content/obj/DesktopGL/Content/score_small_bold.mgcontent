@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/rudad/Code/AchtungDieKurve/AchtungDieKurve/Content/score_small_bold.spritefont</SourceFile>
-  <SourceTime>2023-05-06T18:11:17.0948709+02:00</SourceTime>
-  <DestFile>C:/Users/rudad/Code/AchtungDieKurve/AchtungDieKurve/Content/bin/DesktopGL/Content/score_small_bold.xnb</DestFile>
-  <DestTime>2023-05-06T18:11:23.7424049+02:00</DestTime>
+  <SourceFile>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/score_small_bold.spritefont</SourceFile>
+  <SourceTime>2023-05-13T12:05:49.2142381+02:00</SourceTime>
+  <DestFile>C:/BACKUP-Big/source/repos/AchtungDieKurve/AchtungDieKurve/Content/bin/DesktopGL/Content/score_small_bold.xnb</DestFile>
+  <DestTime>2023-05-13T12:07:24.1030028+02:00</DestTime>
   <Importer>FontDescriptionImporter</Importer>
   <ImporterTime>2020-08-10T18:17:54+02:00</ImporterTime>
   <Processor>FontDescriptionProcessor</Processor>

@@ -553,3 +553,7 @@ C:\Users\rudad\Code\AchtungDieKurve\AchtungDieKurve\bin\Debug\netcoreapp3.1\Cont
 C:\Users\rudad\Code\AchtungDieKurve\AchtungDieKurve\bin\Debug\netcoreapp3.1\Content\bin\DesktopGL\Content\ADKLogo.xnb
 C:\Users\rudad\Code\AchtungDieKurve\AchtungDieKurve\bin\Debug\netcoreapp3.1\Content\ADKLogo2.xnb
 C:\Users\rudad\Code\AchtungDieKurve\AchtungDieKurve\bin\Debug\netcoreapp3.1\Content\bin\DesktopGL\Content\ADKLogo2.xnb
+C:\BACKUP-Big\source\repos\AchtungDieKurve\AchtungDieKurve\bin\Debug\netcoreapp3.1\Content\bin\DesktopGL\Content\ADKLogo.xnb
+C:\BACKUP-Big\source\repos\AchtungDieKurve\AchtungDieKurve\bin\Debug\netcoreapp3.1\Content\bin\DesktopGL\Content\ADKLogo2.xnb
+C:\BACKUP-Big\source\repos\AchtungDieKurve\AchtungDieKurve\bin\Debug\netcoreapp3.1\Content\ADKLogo.xnb
+C:\BACKUP-Big\source\repos\AchtungDieKurve\AchtungDieKurve\bin\Debug\netcoreapp3.1\Content\ADKLogo2.xnb

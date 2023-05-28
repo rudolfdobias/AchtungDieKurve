@@ -24,7 +24,7 @@ namespace AchtungDieKurve.Screens
     class LogoScreen : GameScreen
     {
         private TimeSpan _showStart;
-        private readonly TimeSpan _displayTime = TimeSpan.FromSeconds(3);
+        private readonly TimeSpan _displayTime = TimeSpan.FromSeconds(5);
         private SpriteBatch _batch;
 
         private const float LogoScreenWPercent = 0.4f;
