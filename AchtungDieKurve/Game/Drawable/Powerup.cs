@@ -20,8 +20,10 @@ namespace AchtungDieKurve.Game.Drawable
         protected abstract string TextureName { get; }
         public abstract void Apply(Kurve entity, GameTime gameTime);
         public abstract void Undo();
-        public event EventHandler Ending;
         public bool HasBeenInvoked;
+
+        /// <summary>Set by the expiry timer; the controller undoes and removes the powerup on the game thread.</summary>
+        public bool HasEnded { get; private set; }
         public event CollidableObjectMoved Move;
         protected GameplayScreen Gameplay;
         public Texture2D BodyTexture { get; set; }
@@ -102,6 +104,7 @@ namespace AchtungDieKurve.Game.Drawable
             Invoker = player;
             Apply(player, gameTime);
             ActionTimer.Interval = DurationMilliseconds;
+            ActionTimer.AutoReset = false;
             ActionTimer.Elapsed += ActionTimerOnElapsed;
             ActionTimer.Start();
             _triggeredAt = gameTime.TotalGameTime.TotalMilliseconds;
@@ -110,9 +113,8 @@ namespace AchtungDieKurve.Game.Drawable
 
         private void ActionTimerOnElapsed(object sender, ElapsedEventArgs elapsedEventArgs)
         {
-            Undo();
             ActionTimer.Stop();
-            if (Ending != null) { Ending(this, new EventArgs());}
+            HasEnded = true;
         }
 
         public int RemainingTime(GameTime gameTime)

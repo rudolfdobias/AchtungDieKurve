@@ -86,7 +86,7 @@ namespace AchtungDieKurve
         /// </summary>
         protected override void OnCancel(PlayerIndex playerIndex)
         {
-            const string message = "Exit? You sure?";
+            const string message = "Exit? No!";
 
             MessageBoxScreen confirmExitMessageBox = new MessageBoxScreen(message);
 

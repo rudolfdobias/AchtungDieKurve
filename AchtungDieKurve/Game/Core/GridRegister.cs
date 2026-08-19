@@ -85,10 +85,14 @@ namespace AchtungDieKurve.Game.Core
             return coordinatesToGrid(entity.CollisionBounds.Center);
         }
 
+        /// <summary>
+        /// Returns all grid cells within the given pixel radius of the center
+        /// cell, always including the direct and diagonal neighbours.
+        /// </summary>
         public List<Vector2> GetCriticalRadius(Vector2 center, int radius)
         {
-            var circle = new List<Vector2>();
-            var localRadius = (int)Math.Ceiling(radius / (float)_cellSize);
+            var cells = new List<Vector2>();
+            var localRadius = Math.Max(1, (int)Math.Ceiling(radius / (float)_cellSize));
             var crop = new Vector4(
                 MathHelper.Clamp(center.X - localRadius, 0, _ratioX),
                 MathHelper.Clamp(center.Y - localRadius, 0, _ratioY),
@@ -100,15 +104,11 @@ namespace AchtungDieKurve.Game.Core
             {
                 for (var y = (int)crop.Y; y <= crop.W; y++)
                 {
-                    var actual = new Vector2(x, y);
-                    if (Vector2.Distance(
-                        actual,
-                        new Vector2(center.X, center.Y)
-                        ) <= localRadius) { circle.Add(actual); }
+                    cells.Add(new Vector2(x, y));
                 }
             }
 
-            return circle;
+            return cells;
         }
 
         public void Draw(GameTime gameTime)

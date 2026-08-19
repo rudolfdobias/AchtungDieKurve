@@ -9,7 +9,12 @@ namespace AchtungDieKurve.Game.Core
 
         Texture2D BodyTexture { get; set; }
         PotentialCollision CollisionBounds { get; }
+
+        /// <summary>True when the entity must not be registered into the collision grid (e.g. while drawing a hole).</summary>
         bool CollisionDisabled { get; }
+
+        /// <summary>True when the entity can collide with others (die, collect) right now.</summary>
+        bool CanBeHit { get; }
 
 
         void OnCollisionWith(ICollidable entity, GameTime gameTime);

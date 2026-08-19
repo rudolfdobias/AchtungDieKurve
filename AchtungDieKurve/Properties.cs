@@ -10,25 +10,20 @@ namespace AchtungDieKurve
     public class Properties
     {
         // Core ------------------------------------------------------------- 
-        public const string RegistryPath = "AchtungDieKurve";
-        public const string RegistrySettingsPath = "1.0";
         public bool DebugCoordinates = false;
         public bool DebugCollisions = false;
-        public bool EnableLog = true;
 
         // Game configuration -----------------------------------------------     
         public int GoalPlusPerPlayer = 5;
         public int InitialProtectionTime = 2000;
         public bool PowerupsEnabled = true;
 
-        // View -------------------------------------------------------------
-        public int ScreenWidth = 1920;
-        public int ScreenHeight = 1080;
-        public float Scale = 1;
+        // View -- set by GraphicsManager on every display mode change -------
+        public int ScreenWidth;
+        public int ScreenHeight;
 
         // Player curve specs -----------------------------------------------
         public int MaxPlayerThickness = 100;
-        public int MinPlayerThickness = 1;
         public bool WallBounceWhileProtection = true;
         public double HoleProbability = 0.009;
         public double HoleTerminationProbability = 0.1;
@@ -39,20 +34,16 @@ namespace AchtungDieKurve
         public float MaxPlayerSpeed = 20f;
 
         // Powerups ---------------------------------------------------------
-        public double PowerupProbability = 0.01;
+        public double PowerupProbability = 0.002;
 
         // Runtime vars -----------------------------------------------------
         public int GameGoal = 0;
 
 
         // OLD SHIT
-        public Random Rand = new Random();
+        public Random Rand = new();
         public SfxController Sfx;
 
-        // Sounds
-        public int WeakCrashTimeDeltaSeconds = 15;
-        public int MidCrashTimeDeltaSeconds = 30;
-        public int HeavyCrashTimeDeltaSeconds = 60;
 
 
         // Default player definition ----------------------------------------

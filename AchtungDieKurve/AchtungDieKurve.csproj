@@ -29,7 +29,4 @@
     <PackageReference Include="MonoGame.Framework.DesktopGL" Version="3.8.5.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Game\Settings\" />
-  </ItemGroup>
 </Project>

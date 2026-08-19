@@ -37,13 +37,21 @@ namespace AchtungDieKurve.Game.Drawable
             }
 
             base.Update(gameTime);
+
+            for (var i = OnScreen.Count - 1; i >= 0; i--)
+            {
+                var expired = OnScreen[i];
+                if (!expired.HasEnded) { continue; }
+                expired.Undo();
+                OnScreen.RemoveAt(i);
+            }
+
             if (_random.NextDouble() < GameBase.Defaults.PowerupProbability)
             {
                 var powerup = GetRandomPowerup();
                 if (powerup != null)
                 {
                     powerup.Postition = GetRandomCoordinates();
-                    powerup.Ending += delegate(object sender, EventArgs args) { OnScreen.Remove(sender as Powerup); };
                     _register.Remember(powerup);
                     OnScreen.Add(powerup);
                 }
@@ -119,7 +127,7 @@ namespace AchtungDieKurve.Game.Drawable
         {
             foreach (var powerup in OnScreen)
             {
-                if (!powerup.HasBeenInvoked)
+                if (!powerup.HasBeenInvoked || powerup.HasEnded)
                 {
                     continue;
                 }

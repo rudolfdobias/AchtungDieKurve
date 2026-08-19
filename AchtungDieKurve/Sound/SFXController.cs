@@ -53,45 +53,17 @@ namespace AchtungDieKurve.Sound
             for (int i = 0; i < lightCount; i++ )
                 crashLight.Add(GameBase.GetInstance().Content.Load<SoundEffect>("Crashes/weak/"+i));
             for (int i = 0; i < midCount; i++)
-                crashLight.Add(GameBase.GetInstance().Content.Load<SoundEffect>("Crashes/moderate/" + i));
+                crashMid.Add(GameBase.GetInstance().Content.Load<SoundEffect>("Crashes/moderate/" + i));
             for (int i = 0; i < heavyCount; i++)
-                crashLight.Add(GameBase.GetInstance().Content.Load<SoundEffect>("Crashes/heavy/" + i));
+                crashHeavy.Add(GameBase.GetInstance().Content.Load<SoundEffect>("Crashes/heavy/" + i));
         }
 
         public void PlayRandomCrash(GameTime gt, Kurve player)
         {
             if (SoundEnabled() == false) return;
 
-            PlayRandomWeak();
-            return;
-            
-
-            /*var settings = GameBase.Settings;
-
-            var delta=gt.TotalGameTime.TotalSeconds-GameBase.LastGameStarted.TotalSeconds;
-            if (delta >= settings.MidCrashTimeDeltaSeconds)
-            {
-                this.PlayRandomHeavy();
-            }
-            else if (delta >= settings.WeakCrashTimeDeltaSeconds)
-            {
-                if (player.Diameter >= 18)
-                    this.PlayRandomHeavy();
-                else
-                {
-                    this.PlayRandomModerate();
-                }
-            }
-            else
-            {
-                if (player.Diameter >= 18)
-                    this.PlayRandomHeavy();
-                else if (player.Diameter >= 13)
-                    this.PlayRandomModerate();
-                else
-                    this.PlayRandomWeak();
-            }*/
-            
+            var all = crashLight.Concat(crashMid).Concat(crashHeavy).ToList();
+            all[GameBase.Defaults.Rand.Next(all.Count)].Play();
         }
 
        public void PlayRandomWeak()

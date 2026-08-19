@@ -51,6 +51,7 @@ namespace AchtungDieKurve.Game.Drawable
         
         public float TurnStep { get; set; }
         public Vector2 AbsolutePosition;
+        public Vector2 PreviousPosition;
         public Rectangle ActualBounds;
         public Texture2D BodyTexture { get; set; }
         protected Timer ProtectionTimer;
@@ -62,22 +63,16 @@ namespace AchtungDieKurve.Game.Drawable
             get { return !_drawingEnabled || _hasProtection; }
         }
 
-        public bool CanBeHit { get; private set; }
+        // While drawing a hole the kurve is a ghost: it can pass through walls,
+        // trails and powerups. Whatever it overlaps when the hole ends collides.
+        public bool CanBeHit
+        {
+            get { return _isAlive && !_hasProtection && !_drawingHole; }
+        }
 
         public PotentialCollision CollisionBounds
         {
-            get
-            {
-                switch (Body.Count)
-                {
-                    case 0:
-                        return null;
-                    case 1:
-                        return new PotentialCollision(this, Body.Last(), CollidableShape.Rectangle, CollisionCondition);
-                }
-                return new PotentialCollision(this, Body[Body.Count - 1], CollidableShape.Rectangle,
-                    CollisionCondition);
-            }
+            get { return new PotentialCollision(this, ActualBounds, CollidableShape.Rectangle, CollisionCondition); }
         }
 
         private int _score;
@@ -190,12 +185,7 @@ namespace AchtungDieKurve.Game.Drawable
                 sb.Draw(BodyTexture, r, Color);
             }
 
-            if (DrawingEnabled)
-            {
-                Body.Add(ActualBounds);
-            }
-
-            if (Drawed != null) { 
+            if (Drawed != null) {
                 Drawed(this, gameTime); }
         }
 
@@ -213,11 +203,24 @@ namespace AchtungDieKurve.Game.Drawable
                 if (WallTraversalEnabled)
                 {
                     TraverseWall();
+                    RefreshActualBounds();
                 }
                 else if (_hasProtection && GameBase.Defaults.WallBounceWhileProtection)
                 {
                     WallBounce();
+                    RefreshActualBounds();
                 }
+                else if (!_hasProtection && !_drawingHole)
+                {
+                    SnapToBoundaryContact();
+                    Kill(gameTime);
+                    return;
+                }
+            }
+
+            if (_drawingEnabled)
+            {
+                Body.Add(ActualBounds);
             }
 
             Move?.Invoke(this, gameTime);
@@ -252,7 +255,9 @@ namespace AchtungDieKurve.Game.Drawable
                 AbsolutePosition.Y = Container.ContentArea.Height - (Radius +3);
             else if (ActualBounds.Bottom >= Container.ContentArea.Height)
                 AbsolutePosition.Y = Radius + 3;
-            
+
+            PreviousPosition = AbsolutePosition;
+
             /*
             AbsolutePosition = new Vector2(
                 MathHelper.Clamp(AbsolutePosition.X, Radius +1, Container.ContentArea.Width - Radius -1),
@@ -268,6 +273,7 @@ namespace AchtungDieKurve.Game.Drawable
                 MathHelper.Clamp(AbsolutePosition.X, Radius +1, Container.ContentArea.Width - Radius -1),
                 MathHelper.Clamp(AbsolutePosition.Y, Radius +1, Container.ContentArea.Height - Radius -1)
                 );
+            PreviousPosition = AbsolutePosition;
             var v = new Vector2(Angle);
 
             // Bounce angle equals hit angle...
@@ -284,13 +290,19 @@ namespace AchtungDieKurve.Game.Drawable
 
         private void ComputeActualBounds()
         {
+            PreviousPosition = AbsolutePosition;
             AbsolutePosition += new Vector2(
                 (float)(Speed * Math.Cos(Angle)),
                 (float)(Speed * Math.Sin(Angle))
                 );
+            RefreshActualBounds();
+        }
+
+        private void RefreshActualBounds()
+        {
             ActualBounds = new Rectangle(
                 (int)MathHelper.Clamp(AbsolutePosition.X - Radius, 0, Container.ContentArea.Width),
-                (int)MathHelper.Clamp(AbsolutePosition.Y - Radius, 0, Container.ContentArea.Height), 
+                (int)MathHelper.Clamp(AbsolutePosition.Y - Radius, 0, Container.ContentArea.Height),
                 Diameter, Diameter);
         }
 
@@ -318,13 +330,61 @@ namespace AchtungDieKurve.Game.Drawable
 
         private bool BoundaryCollision()
         {
-            var hitTheWall = (
-                ActualBounds.Left <= 0 ||
-                ActualBounds.Right >= Container.ContentArea.Width ||
-                ActualBounds.Top <= 0 ||
-                ActualBounds.Bottom >= Container.ContentArea.Height
+            var radius = Diameter / 2f;
+            return (
+                AbsolutePosition.X - radius <= 0 ||
+                AbsolutePosition.X + radius >= Container.ContentArea.Width ||
+                AbsolutePosition.Y - radius <= 0 ||
+                AbsolutePosition.Y + radius >= Container.ContentArea.Height
                 );
-            return hitTheWall;
+        }
+
+        /// <summary>
+        /// Moves back along this frame's movement to the exact point where the
+        /// body circle touches the playfield boundary.
+        /// </summary>
+        private void SnapToBoundaryContact()
+        {
+            var radius = Diameter / 2f;
+            var delta = AbsolutePosition - PreviousPosition;
+            var t = 1f;
+            if (delta.X < 0 && AbsolutePosition.X - radius < 0)
+                t = Math.Min(t, (radius - PreviousPosition.X) / delta.X);
+            if (delta.X > 0 && AbsolutePosition.X + radius > Container.ContentArea.Width)
+                t = Math.Min(t, (Container.ContentArea.Width - radius - PreviousPosition.X) / delta.X);
+            if (delta.Y < 0 && AbsolutePosition.Y - radius < 0)
+                t = Math.Min(t, (radius - PreviousPosition.Y) / delta.Y);
+            if (delta.Y > 0 && AbsolutePosition.Y + radius > Container.ContentArea.Height)
+                t = Math.Min(t, (Container.ContentArea.Height - radius - PreviousPosition.Y) / delta.Y);
+
+            AbsolutePosition = PreviousPosition + delta * MathHelper.Clamp(t, 0, 1);
+            RefreshActualBounds();
+        }
+
+        /// <summary>
+        /// Moves back along this frame's movement to the first contact between
+        /// the body circle and the circle inscribed in the given bounds. Keeps
+        /// the position when the frame already started overlapping (gap end).
+        /// </summary>
+        public void SnapToSweepContact(Rectangle other)
+        {
+            var center = new Vector2(other.Center.X, other.Center.Y);
+            var reach = Diameter / 2f + other.Width / 2f;
+            var delta = AbsolutePosition - PreviousPosition;
+            var offset = PreviousPosition - center;
+
+            var a = Vector2.Dot(delta, delta);
+            if (a < 1e-6f) { return; }
+            var b = 2f * Vector2.Dot(offset, delta);
+            var c = Vector2.Dot(offset, offset) - reach * reach;
+            var discriminant = b * b - 4f * a * c;
+            if (discriminant < 0) { return; }
+
+            var t = (-b - (float)Math.Sqrt(discriminant)) / (2f * a);
+            if (t < 0 || t > 1) { return; }
+
+            AbsolutePosition = PreviousPosition + delta * t;
+            RefreshActualBounds();
         }
 
         public void StartProtection(int milliseconds)
@@ -375,6 +435,8 @@ namespace AchtungDieKurve.Game.Drawable
 
         public void Kill(GameTime gameTime)
         {
+            if (!_isAlive) { return; }
+
             _isAlive = false;
             Death?.Invoke(this, gameTime);
         }
@@ -395,14 +457,10 @@ namespace AchtungDieKurve.Game.Drawable
     
         public void OnCollisionWith(ICollidable entity, GameTime gameTime)
         {
-            if (IsAlive == false)
-                return;
-
             if (entity is Kurve || entity is Wall)
             {
-                _isAlive = false;
-                Death?.Invoke(this, gameTime);
-            } 
+                Kill(gameTime);
+            }
         }
 
         public void WasHit(ICollidable entity, GameTime gameTime)
@@ -440,6 +498,7 @@ namespace AchtungDieKurve.Game.Drawable
             var x = Context.Rand.Next((int)(Container.ContentArea.Width * 0.4)) + (int)(Container.ContentArea.Width * 0.2);
             var y = Context.Rand.Next((int)(Container.ContentArea.Height * 0.4)) + (int)(Container.ContentArea.Height * 0.2);
             AbsolutePosition = new Vector2(x, y);
+            PreviousPosition = AbsolutePosition;
             Angle = MathHelper.WrapAngle((float)Context.Rand.NextDouble() * 2.0f * (float)Math.PI);
             _hasProtection = true;
             _drawingEnabled = false;

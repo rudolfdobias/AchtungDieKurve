@@ -26,19 +26,19 @@ namespace AchtungDieKurve.Game.Drawable.Powerups
             {
                
               // new PowerupInfo(0.2f, "Clear"),
-                new PowerupInfo(0.4f, "Fast"),
-                new PowerupInfo(0.5f, "FastEnemy"),
-                new PowerupInfo(0.5f, "SlowEnemy"),
-                new PowerupInfo(0.5f, "SlimEnemy"),
-                new PowerupInfo(0.5f, "FatEnemy"),
-                new PowerupInfo(0.5f, "Fat"),
-                new PowerupInfo(0.3f, "Transcend"),
-                new PowerupInfo(0.5f, "Slim"),
-                new PowerupInfo(0.4f, "Slow"),
-                new PowerupInfo(0.1f, "Death"),
-                new PowerupInfo(12f, "NoWalls"),
+                new(0.4f, "Fast"),
+                new(0.5f, "FastEnemy"),
+                new(0.5f, "SlowEnemy"),
+                new(0.5f, "SlimEnemy"),
+                new(0.5f, "FatEnemy"),
+                new(0.5f, "Fat"),
+                new(0.3f, "Transcend"),
+                new(0.5f, "Slim"),
+                new(0.4f, "Slow"),
+                new(0.1f, "Death"),
+                new(0.2f, "NoWalls"),
                 //new PowerupInfo(1f, "Twister"),
-                new PowerupInfo(0.3f, "Switch")
+                new(0.3f, "Switch")
             };
         }
     }

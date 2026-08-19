@@ -46,6 +46,11 @@ namespace AchtungDieKurve.Game.Drawable
             get { return false; }
         }
 
+        public bool CanBeHit
+        {
+            get { return false; }
+        }
+
         public void OnCollisionWith(ICollidable entity, GameTime gameTime)
         {
             
@@ -56,9 +61,13 @@ namespace AchtungDieKurve.Game.Drawable
             // hello kitty
         }
 
+        /// <summary>
+        /// Walls never produce collision events; the playfield boundary check in
+        /// Kurve.Update owns wall deaths. Walls stay registered for AI vision.
+        /// </summary>
         public bool Condition(ICollidable me, PotentialCollision company, GameTime gameTime)
         {
-            return true;
+            return false;
         }
     }
 }

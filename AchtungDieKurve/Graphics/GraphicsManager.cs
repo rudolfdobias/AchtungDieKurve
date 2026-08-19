@@ -32,6 +32,7 @@ namespace AchtungDieKurve.Graphics
 
         private readonly Properties context;
         private Point windowedSize;
+        private bool _syncing;
 
         public GraphicsManager(GameBase game, Properties context)
         {
@@ -86,6 +87,34 @@ namespace AchtungDieKurve.Graphics
             windowedSize = size;
             if (!IsFullScreen)
                 ApplyMode(false, size);
+        }
+
+        /// <summary>
+        /// Adopts the size the OS actually gave the window (e.g. macOS clips
+        /// borderless fullscreen at the menu bar) so rendering and layout
+        /// always match the visible area.
+        /// </summary>
+        public void SyncToWindow(Rectangle clientBounds)
+        {
+            if (_syncing) { return; }
+            if (clientBounds.Width <= 0 || clientBounds.Height <= 0) { return; }
+            if (clientBounds.Width == context.ScreenWidth && clientBounds.Height == context.ScreenHeight) { return; }
+
+            _syncing = true;
+            try
+            {
+                GameBase.Graphics.PreferredBackBufferWidth = clientBounds.Width;
+                GameBase.Graphics.PreferredBackBufferHeight = clientBounds.Height;
+                GameBase.Graphics.ApplyChanges();
+
+                context.ScreenWidth = clientBounds.Width;
+                context.ScreenHeight = clientBounds.Height;
+                ScaleGameplay(clientBounds.Height);
+            }
+            finally
+            {
+                _syncing = false;
+            }
         }
 
         private void ApplyMode(bool fullScreen, Point size)

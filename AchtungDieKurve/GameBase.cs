@@ -57,6 +57,7 @@ namespace AchtungDieKurve
             Graphics = new GraphicsDeviceManager(this);
             Defaults = new Properties();
             GraphicsManager = new GraphicsManager(this, Defaults);
+            Window.ClientSizeChanged += (s, e) => GraphicsManager.SyncToWindow(Window.ClientBounds);
             
             // Create the screen manager component.
             screenManager = new ScreenManager(this);           
@@ -87,9 +88,11 @@ namespace AchtungDieKurve
         {
             SFX.Load();
             CommonResources.Load(this);
-            
-            base.LoadContent();
+
+            // Apply the real display mode before the screens load, so nothing
+            // sees placeholder screen dimensions.
             InitGraphics();
+            base.LoadContent();
         }
        
 
