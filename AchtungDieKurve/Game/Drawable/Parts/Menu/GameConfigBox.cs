@@ -332,6 +332,7 @@ namespace AchtungDieKurve.Game.Drawable.Parts.Menu
                     _playerDefinitions[SelectedId].IsAi = true;
                     _playerDefinitions[SelectedId].Active = true;
                 }
+                SaveSettings();
             }
 
             if (input.IsNewKeyPress(Keys.P, _screen.ControllingPlayer, out _))

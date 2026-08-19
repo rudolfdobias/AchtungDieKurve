@@ -34,7 +34,12 @@ namespace AchtungDieKurve
         public float MaxPlayerSpeed = 20f;
 
         // Powerups ---------------------------------------------------------
-        public double PowerupProbability = 0.002;
+        public double PowerupProbability = 0.007;
+
+        // AI: 0..1. Aggressiveness = how often the AI attacks instead of just
+        // surviving; Precision = reaction speed and steering accuracy.
+        public float AiAggressiveness = 0.55f;
+        public float AiPrecision = 0.95f;
 
         // Runtime vars -----------------------------------------------------
         public int GameGoal = 0;

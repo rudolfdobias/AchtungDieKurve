@@ -44,7 +44,7 @@ Caveats:
 Reflection-based string registry: `PowerupsController` (`Game/Drawable/Powerups.cs`) resolves class names from `Game/Drawable/Powerups/Register.cs` via `Type.GetType` + `Activator.CreateInstance`. **Adding a powerup requires both** a class in `Game/Drawable/Powerups/` (with both the 3-arg and 4-arg constructors, since `Fork()` clones by reflection) **and** an entry in `Register.Load()`.
 
 ### AI
-`Game/AI/AiDriver.ControlAi` queries `GridRegister.Neighborhood`, builds an `ArcMatrix` (angle → nearest obstacle), and runs it through `IAiActivity` implementations (only `Activities/Survive.cs` exists).
+`Game/AI/AIDriver.cs` — feeler-based steering: 7 rays around the heading measure free distance (kurve trails as circles from `GridRegister.Neighborhood`, playfield edges analytically; walls/powerups in the grid are ignored). The AI steers into the most open direction, and episodically (driven by `Defaults.AiAggressiveness`) targets an intercept point ahead of the nearest enemy, with a survival veto. `Defaults.AiPrecision` sets reaction interval and steering error; both are jittered per player per round in `AiPlayer.Reset()`. All per-player AI state lives on `AiPlayer`; the driver is stateless. `DebugCollisions = true` draws the feelers.
 
 ## Conventions & gotchas
 

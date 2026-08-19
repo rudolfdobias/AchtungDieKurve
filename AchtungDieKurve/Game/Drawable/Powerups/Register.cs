@@ -36,7 +36,7 @@ namespace AchtungDieKurve.Game.Drawable.Powerups
                 new(0.5f, "Slim"),
                 new(0.4f, "Slow"),
                 new(0.1f, "Death"),
-                new(0.2f, "NoWalls"),
+                new(0.3f, "NoWalls"),
                 //new PowerupInfo(1f, "Twister"),
                 new(0.3f, "Switch")
             };

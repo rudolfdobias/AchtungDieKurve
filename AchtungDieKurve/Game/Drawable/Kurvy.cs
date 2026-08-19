@@ -28,7 +28,7 @@ namespace AchtungDieKurve.Game.Drawable
                 _statics = CreateWalls();
                 _register = register;
                 _collisionManager = new CollisionManager(spriteBatch, ref _register);
-                _driver = new AiDriver(container, ref _register);
+                _driver = new AiDriver(container, players, ref _register);
                 _powerups = new PowerupsController(GameBase.GetInstance(), spriteBatch, container, ref _register, gameplay);
                 RegisterWalls();
                 

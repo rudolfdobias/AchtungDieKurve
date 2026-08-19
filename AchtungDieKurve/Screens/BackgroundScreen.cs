@@ -101,9 +101,10 @@ namespace AchtungDieKurve
            /* spriteBatch.Draw(backgroundTexture, fullscreen,
                              new Color(TransitionAlpha, TransitionAlpha, TransitionAlpha));*/
 
-            string message = "Achtung die Kurve v0.3 by RD 2013";
+            string message = "Achtung die Kurve v0.3, 2013-2026 [RD]";
             int ypad = 8;
             int xpad = 12;
+            
             Vector2 measure=ScreenManager.Copyfont.MeasureString(message);
 
 
