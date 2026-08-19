@@ -1,173 +1,85 @@
-﻿#region File Description
-//-----------------------------------------------------------------------------
-// OptionsMenuScreen.cs
-//
-// Microsoft XNA Community Game Platform
-// Copyright (C) Microsoft Corporation. All rights reserved.
-//-----------------------------------------------------------------------------
-#endregion
-
-#region Using Statements
-using System;
 using System.Collections.Generic;
+using AchtungDieKurve.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-#endregion
 
 namespace AchtungDieKurve
 {
     /// <summary>
-    /// The options screen is brought up over the top of the main menu
-    /// screen, and gives the user a chance to configure the game
-    /// in various hopefully useful ways.
+    /// Video settings menu: fullscreen toggle and window size selection.
     /// </summary>
     class VideoScreen : MenuScreen
     {
-        #region Fields
-
         MenuEntry adapterEntry;
         MenuEntry fullscreenEntry;
         MenuEntry resolutionEntry;
-        MenuEntry applyEntry;
-        MenuEntry separator;
 
-        static bool fullscreen = false;
-        static bool lowRes = false;
-  
+        List<Point> windowSizes;
+        int windowSizeIndex;
 
-        #endregion
-
-        #region Initialization
-
-
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        public VideoScreen(ScreenManager ScreenManager)
+        public VideoScreen(ScreenManager screenManager)
             : base("Video")
         {
-            // Create our menu entries.
+            ScreenManager = screenManager;
+
             adapterEntry = new MenuEntry(string.Empty);
-            resolutionEntry = new MenuEntry(string.Empty);
             fullscreenEntry = new MenuEntry(string.Empty);
-            applyEntry= new MenuEntry(string.Empty);
-            separator = new MenuEntry(string.Empty);
+            resolutionEntry = new MenuEntry(string.Empty);
+            var back = new MenuEntry("Back");
 
-            this.ScreenManager = ScreenManager;
-            MenuEntry back = new MenuEntry("Back");
+            windowSizes = GraphicsManager.AvailableWindowSizes();
+            windowSizeIndex = windowSizes.IndexOf(GameBase.GraphicsManager.WindowedSize);
+            if (windowSizeIndex < 0)
+                windowSizeIndex = windowSizes.Count - 1;
 
-           
-
-            // Hook up menu event handlers.
-            adapterEntry.Selected += adapterEntrySelected;
-            resolutionEntry.Selected += resolutionEntrySelected;
-            fullscreenEntry.Selected += fullscreenEntrySelected;
-            applyEntry.Selected += applyEntrySelected;
+            fullscreenEntry.Selected += FullscreenSelected;
+            resolutionEntry.Selected += ResolutionSelected;
             back.Selected += OnCancel;
 
-            // Add entries to the menu.
             MenuEntries.Add(adapterEntry);
-            MenuEntries.Add(resolutionEntry);
             MenuEntries.Add(fullscreenEntry);
-          //  MenuEntries.Add(separator);
-          //  MenuEntries.Add(applyEntry);
-            MenuEntries.Add(separator);
+            MenuEntries.Add(resolutionEntry);
             MenuEntries.Add(back);
 
             SetMenuEntryText();
         }
 
-
-        /// <summary>
-        /// Fills in the latest values for the options screen menu text.
-        /// </summary>
-        public void SetMenuEntryText()
+        void SetMenuEntryText()
         {
+            var manager = GameBase.GraphicsManager;
 
             adapterEntry.Text = ScreenManager.GraphicsDevice.Adapter.Description;
-            fullscreenEntry.Text = "Fullscreen: " + (fullscreen ? "ON" : "OFF");
-            resolutionEntry.Text = GameBase.Graphics.PreferredBackBufferWidth + " x " + GameBase.Graphics.PreferredBackBufferHeight.ToString();
-            applyEntry.Text = "Apply resolution";
-        }
+            fullscreenEntry.Text = "Fullscreen: " + (manager.IsFullScreen ? "ON" : "OFF");
 
-
-        #endregion
-
-        #region Handle Input
-
-
-        /// <summary>
-        /// Event handler for when the Ungulate menu entry is selected.
-        /// </summary>
-        void adapterEntrySelected(object sender, PlayerIndexEventArgs e)
-        {
-        
-            SetMenuEntryText();
-        }
-
-
-        /// <summary>
-        /// Event handler for when the Language menu entry is selected.
-        /// </summary>
-        void resolutionEntrySelected(object sender, PlayerIndexEventArgs e)
-        {
-            lowRes = !lowRes;
-
-            // todo: make it a little bit more inteligent... but it's sufficient for this night..
-
-            if (lowRes == false)
+            if (manager.IsFullScreen)
             {
-                GameBase.Graphics.PreferredBackBufferWidth = 2560;
-                GameBase.Graphics.PreferredBackBufferHeight = 1440;
-                GameBase.Defaults.DefaultDiameter = 16;
-                GameBase.Defaults.DefaultSpeed = 3f;
-            }
-            else
-            
-            {
-                GameBase.Graphics.PreferredBackBufferWidth = 1920;
-                GameBase.Graphics.PreferredBackBufferHeight = 1080;
-                GameBase.Defaults.DefaultDiameter = 8;
-                GameBase.Defaults.DefaultSpeed = 2.2f                                   ;
-            }
-            GameBase.Graphics.ApplyChanges();
-            if (GameBase.Graphics.IsFullScreen)
-            {
-                GameBase.Defaults.ScreenWidth = GameBase.Graphics.GraphicsDevice.DisplayMode.Width;
-                GameBase.Defaults.ScreenHeight = GameBase.Graphics.GraphicsDevice.DisplayMode.Height;
+                var desktop = GraphicsManager.DesktopResolution;
+                resolutionEntry.Text = "Resolution: " + desktop.X + " x " + desktop.Y + " (desktop)";
             }
             else
             {
-                GameBase.Defaults.ScreenWidth = GameBase.Graphics.GraphicsDevice.Viewport.Width;
-                GameBase.Defaults.ScreenHeight = GameBase.Graphics.GraphicsDevice.Viewport.Height;
+                var size = windowSizes[windowSizeIndex];
+                resolutionEntry.Text = "Resolution: " + size.X + " x " + size.Y;
             }
-            
-            SetMenuEntryText();
         }
 
+        void FullscreenSelected(object sender, PlayerIndexEventArgs e)
+        {
+            GameBase.GraphicsManager.SetFullScreen(!GameBase.GraphicsManager.IsFullScreen);
+            SetMenuEntryText();
+        }
 
         /// <summary>
-        /// Event handler for when the Frobnicate menu entry is selected.
+        /// Cycles through the available window sizes; fullscreen always uses
+        /// the desktop resolution, so the entry is informational there.
         /// </summary>
-        void fullscreenEntrySelected(object sender, PlayerIndexEventArgs e)
+        void ResolutionSelected(object sender, PlayerIndexEventArgs e)
         {
-            fullscreen = !fullscreen;
-            GameBase.Graphics.ToggleFullScreen();
+            if (GameBase.GraphicsManager.IsFullScreen)
+                return;
+
+            windowSizeIndex = (windowSizeIndex + 1) % windowSizes.Count;
+            GameBase.GraphicsManager.SetWindowedSize(windowSizes[windowSizeIndex]);
             SetMenuEntryText();
         }
-
-
-        /// <summary>
-        /// Event handler for when the Elf menu entry is selected.
-        /// </summary>
-        void applyEntrySelected(object sender, PlayerIndexEventArgs e)
-        {
-            GameBase.Graphics.ApplyChanges();
-
-            SetMenuEntryText();
-        }
-
-
-        #endregion
     }
 }

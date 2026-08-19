@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <XnaContent xmlns:Graphics="Microsoft.Xna.Framework.Content.Pipeline.Graphics">
 	<Asset Type="Graphics:FontDescription">
-		<FontName>Staatliches</FontName>
+		<FontName>Staatliches-Regular.ttf</FontName>
 		<Size>23</Size>
 		<Spacing>3</Spacing>
 		<Style>Regular</Style>

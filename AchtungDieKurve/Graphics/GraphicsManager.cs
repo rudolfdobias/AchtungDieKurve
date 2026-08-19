@@ -1,59 +1,121 @@
-﻿namespace AchtungDieKurve.Graphics
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+namespace AchtungDieKurve.Graphics
 {
+    /// <summary>
+    /// Owns display mode state. Fullscreen is always borderless at the desktop
+    /// resolution (exclusive mode switches are unreliable on macOS); windowed
+    /// mode uses a selectable window size.
+    /// </summary>
     public class GraphicsManager
     {
-        private Properties context;
+        // Gameplay tuning baseline: values in Properties are calibrated for 1080p.
+        private const int ReferenceHeight = 1080;
+        private const int ReferenceDiameter = 8;
+        private const float ReferenceSpeed = 2.2f;
+
+        private static readonly Point[] CommonWindowSizes =
+        {
+            new Point(1024, 576),
+            new Point(1280, 720),
+            new Point(1366, 768),
+            new Point(1600, 900),
+            new Point(1920, 1080),
+            new Point(2560, 1440),
+            new Point(3440, 1440),
+            new Point(3840, 2160),
+        };
+
+        private readonly Properties context;
+        private Point windowedSize;
 
         public GraphicsManager(GameBase game, Properties context)
         {
             this.context = context;
         }
 
+        public bool IsFullScreen => GameBase.Graphics.IsFullScreen;
+
+        public Point WindowedSize => windowedSize;
+
+        public static Point DesktopResolution
+        {
+            get
+            {
+                var mode = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode;
+                return new Point(mode.Width, mode.Height);
+            }
+        }
+
+        /// <summary>
+        /// Window sizes selectable in windowed mode: common 16:9 sizes plus the
+        /// adapter's modes, all fitting the desktop, smallest first.
+        /// </summary>
+        public static List<Point> AvailableWindowSizes()
+        {
+            var desktop = DesktopResolution;
+            return CommonWindowSizes
+                .Concat(GraphicsAdapter.DefaultAdapter.SupportedDisplayModes
+                    .Select(m => new Point(m.Width, m.Height)))
+                .Where(p => p.X <= desktop.X && p.Y <= desktop.Y)
+                .Distinct()
+                .OrderBy(p => (long)p.X * p.Y)
+                .ToList();
+        }
+
         public void Reset()
         {
-            SetDisplayMode(1920, 1080);
+            windowedSize = DefaultWindowedSize();
             SetFullScreen(true);
-            SetScale();
-            Apply();
         }
 
-        public void SetScale(float scale = 1)
+        public void SetFullScreen(bool on)
         {
-            context.Scale = scale;
+            ApplyMode(on, on ? DesktopResolution : windowedSize);
         }
 
-        public void SetDisplayMode(int w, int h)
+        /// <summary>
+        /// Remembers the window size and applies it immediately when windowed.
+        /// </summary>
+        public void SetWindowedSize(Point size)
         {
-            GameBase.Graphics.PreferredBackBufferWidth = w;
-            GameBase.Graphics.PreferredBackBufferHeight = h;
-            
-            
-            Apply();
+            windowedSize = size;
+            if (!IsFullScreen)
+                ApplyMode(false, size);
         }
 
-        public void Apply()
+        private void ApplyMode(bool fullScreen, Point size)
         {
+            GameBase.Graphics.HardwareModeSwitch = false;
+            GameBase.Graphics.IsFullScreen = fullScreen;
+            GameBase.Graphics.PreferredBackBufferWidth = size.X;
+            GameBase.Graphics.PreferredBackBufferHeight = size.Y;
             GameBase.Graphics.ApplyChanges();
 
-            if (GameBase.Graphics.IsFullScreen)
-            {
-                context.ScreenWidth = GameBase.Graphics.GraphicsDevice.DisplayMode.Width;
-                context.ScreenHeight = GameBase.Graphics.GraphicsDevice.DisplayMode.Height;
-            }
-            else
-            {
-                context.ScreenWidth = GameBase.Graphics.GraphicsDevice.Viewport.Width;
-                context.ScreenHeight = GameBase.Graphics.GraphicsDevice.Viewport.Height;
-            }
+            context.ScreenWidth = size.X;
+            context.ScreenHeight = size.Y;
+            ScaleGameplay(size.Y);
         }
 
-        public void SetFullScreen(bool on = true)
+        private void ScaleGameplay(int height)
         {
-            if (GameBase.Graphics.IsFullScreen != on)
-            {
-                GameBase.Graphics.ToggleFullScreen();
-                Apply();
-            }
+            var ratio = (float)height / ReferenceHeight;
+            context.DefaultDiameter = Math.Max(2, (int)Math.Round(ReferenceDiameter * ratio));
+            context.DefaultSpeed = ReferenceSpeed * ratio;
+        }
+
+        // Largest available size that still leaves room around the window.
+        private static Point DefaultWindowedSize()
+        {
+            var desktop = DesktopResolution;
+            var fitting = AvailableWindowSizes()
+                .Where(p => p.X < desktop.X && p.Y < desktop.Y)
+                .ToList();
+            return fitting.Count > 0 ? fitting[fitting.Count - 1] : desktop;
         }
     }
 }

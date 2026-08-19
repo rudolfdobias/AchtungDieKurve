@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AchtungDieKurve")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f23a3fc24bb08e7f427ee26fc8476cea6978e922")]
 [assembly: System.Reflection.AssemblyProductAttribute("AchtungDieKurve")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AchtungDieKurve")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
