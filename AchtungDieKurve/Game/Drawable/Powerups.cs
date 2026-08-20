@@ -42,7 +42,7 @@ namespace AchtungDieKurve.Game.Drawable
             {
                 var expired = OnScreen[i];
                 if (!expired.HasEnded) { continue; }
-                expired.Undo();
+                expired.UndoOnce();
                 OnScreen.RemoveAt(i);
             }
 
@@ -127,12 +127,8 @@ namespace AchtungDieKurve.Game.Drawable
         {
             foreach (var powerup in OnScreen)
             {
-                if (!powerup.HasBeenInvoked || powerup.HasEnded)
-                {
-                    continue;
-                }
                 powerup.Pause();
-                powerup.Undo();
+                powerup.UndoOnce();
             }
             OnScreen.Clear();
         }

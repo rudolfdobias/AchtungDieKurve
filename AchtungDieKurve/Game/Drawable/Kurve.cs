@@ -495,6 +495,8 @@ namespace AchtungDieKurve.Game.Drawable
         public virtual void Reset()
         {
             Body.Clear();
+            ActivePowerups.Clear();
+            WallTraversalEnabled = false;
             var x = Context.Rand.Next((int)(Container.ContentArea.Width * 0.4)) + (int)(Container.ContentArea.Width * 0.2);
             var y = Context.Rand.Next((int)(Container.ContentArea.Height * 0.4)) + (int)(Container.ContentArea.Height * 0.2);
             AbsolutePosition = new Vector2(x, y);

@@ -24,6 +24,16 @@ namespace AchtungDieKurve.Game.Drawable
 
         /// <summary>Set by the expiry timer; the controller undoes and removes the powerup on the game thread.</summary>
         public bool HasEnded { get; private set; }
+
+        private bool _undoApplied;
+
+        /// <summary>Undoes the effect exactly once, no matter how often it is called.</summary>
+        public void UndoOnce()
+        {
+            if (!HasBeenInvoked || _undoApplied) { return; }
+            _undoApplied = true;
+            Undo();
+        }
         public event CollidableObjectMoved Move;
         protected GameplayScreen Gameplay;
         public Texture2D BodyTexture { get; set; }

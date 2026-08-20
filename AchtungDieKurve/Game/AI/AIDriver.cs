@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using AchtungDieKurve.Game.Core;
 using AchtungDieKurve.Game.Drawable;
+using AchtungDieKurve.Game.Drawable.Powerups;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,21 +11,17 @@ namespace AchtungDieKurve.Game.AI
 {
     /// <summary>
     /// Feeler-based steering: rays around the heading measure free distance;
-    /// the kurve steers into open space and occasionally cuts off an enemy.
-    /// Aggressiveness and Precision come from Properties, jittered per player.
+    /// the kurve steers into open space, occasionally cuts off an enemy and
+    /// seeks useful powerups (avoiding Death). Aggressiveness and Precision
+    /// come from Properties, jittered per player.
     /// </summary>
     public class AiDriver
     {
-        private static readonly float[] FeelerOffsets =
-        {
-            0f,
-            MathHelper.ToRadians(25), -MathHelper.ToRadians(25),
-            MathHelper.ToRadians(55), -MathHelper.ToRadians(55),
-            MathHelper.ToRadians(90), -MathHelper.ToRadians(90),
-        };
+        // 15-degree resolution so narrow gaps in trails stay visible.
+        private static readonly float[] FeelerOffsets = CreateFeelerOffsets(6, MathHelper.ToRadians(15));
 
         private const float StraightBias = 1.15f;
-        private const float AttackVetoFactor = 0.35f;
+        private const float GoalVetoFactor = 0.35f;
         private const int InterceptLeadFrames = 40;
         private const int AttackDurationMs = 2000;
 
@@ -45,6 +42,18 @@ namespace AchtungDieKurve.Game.AI
             _register = register;
         }
 
+        private static float[] CreateFeelerOffsets(int perSide, float step)
+        {
+            var offsets = new float[perSide * 2 + 1];
+            offsets[0] = 0f;
+            for (var i = 1; i <= perSide; i++)
+            {
+                offsets[i * 2 - 1] = step * i;
+                offsets[i * 2] = -step * i;
+            }
+            return offsets;
+        }
+
         public void ControlAi(Kurve player, KeyboardState keyboardState, GameTime gameTime)
         {
             var ai = player as AiPlayer;
@@ -63,7 +72,9 @@ namespace AchtungDieKurve.Game.AI
         private void Decide(AiPlayer ai, GameTime gameTime)
         {
             var lookahead = Lookahead(ai);
-            var obstacles = SenseObstacles(ai, gameTime, lookahead);
+            List<Circle> obstacles;
+            List<Powerup> powerups;
+            Sense(ai, gameTime, lookahead, out obstacles, out powerups);
 
             var free = new float[FeelerOffsets.Length];
             for (var i = 0; i < FeelerOffsets.Length; i++)
@@ -74,13 +85,10 @@ namespace AchtungDieKurve.Game.AI
             var desired = SurviveHeading(ai, free);
 
             UpdateAttackState(ai, gameTime);
-            if (ai.AttackTarget != null)
+            var goal = GoalHeading(ai, powerups);
+            if (goal.HasValue && FreeDistance(ai, goal.Value, lookahead, obstacles) >= lookahead * GoalVetoFactor)
             {
-                var attackHeading = InterceptHeading(ai);
-                if (FreeDistance(ai, attackHeading, lookahead, obstacles) >= lookahead * AttackVetoFactor)
-                {
-                    desired = attackHeading;
-                }
+                desired = goal.Value;
             }
 
             var sloppiness = 1 - ai.Precision;
@@ -113,17 +121,99 @@ namespace AchtungDieKurve.Game.AI
             return ai.Angle + FeelerOffsets[bestIndex];
         }
 
-        // Walls are measured analytically against the playfield edges and
-        // powerups are harmless, so only kurve trails become obstacle circles.
-        private List<Circle> SenseObstacles(AiPlayer ai, GameTime gameTime, float lookahead)
+        /// <summary>
+        /// Attack intercept or a desirable powerup, null when neither applies.
+        /// A powerup wins over the intercept when it is much closer.
+        /// </summary>
+        private float? GoalHeading(AiPlayer ai, List<Powerup> powerups)
         {
-            var result = new List<Circle>();
+            var attacking = ai.AttackTarget != null;
+            var pickup = NearestDesirable(ai, powerups, attacking);
+
+            if (attacking)
+            {
+                if (pickup != null)
+                {
+                    var pickupDistance = Vector2.DistanceSquared(PowerupCenter(pickup), ai.AbsolutePosition);
+                    var targetDistance = Vector2.DistanceSquared(ai.AttackTarget.AbsolutePosition, ai.AbsolutePosition);
+                    if (pickupDistance < targetDistance * 0.25f)
+                    {
+                        return HeadingTo(ai, PowerupCenter(pickup));
+                    }
+                }
+                return InterceptHeading(ai);
+            }
+
+            return pickup != null ? HeadingTo(ai, PowerupCenter(pickup)) : (float?)null;
+        }
+
+        private static bool IsDesirable(Powerup powerup, bool attacking)
+        {
+            if (powerup is Switch) { return true; }
+            if (attacking)
+            {
+                return powerup is Fast || powerup is SlowEnemy || powerup is FatEnemy;
+            }
+            return powerup is Slow || powerup is Slim || powerup is Transcend;
+        }
+
+        private Powerup NearestDesirable(AiPlayer ai, List<Powerup> powerups, bool attacking)
+        {
+            Powerup best = null;
+            var bestDistance = float.MaxValue;
+            foreach (var powerup in powerups)
+            {
+                if (!IsDesirable(powerup, attacking)) { continue; }
+                var distance = Vector2.DistanceSquared(PowerupCenter(powerup), ai.AbsolutePosition);
+                if (distance < bestDistance)
+                {
+                    bestDistance = distance;
+                    best = powerup;
+                }
+            }
+            return best;
+        }
+
+        private static Vector2 PowerupCenter(Powerup powerup)
+        {
+            return powerup.Postition + new Vector2(Powerup.Width / 2f, Powerup.Height / 2f);
+        }
+
+        private static float HeadingTo(AiPlayer ai, Vector2 point)
+        {
+            var direction = point - ai.AbsolutePosition;
+            return (float)Math.Atan2(direction.Y, direction.X);
+        }
+
+        // Kurve trails become obstacle circles; Death powerups are obstacles
+        // too so the feelers route around them. Other collectable powerups are
+        // returned for goal seeking. Walls are measured analytically.
+        private void Sense(AiPlayer ai, GameTime gameTime, float lookahead,
+            out List<Circle> obstacles, out List<Powerup> powerups)
+        {
+            obstacles = new List<Circle>();
+            powerups = new List<Powerup>();
+
             foreach (var company in _register.Neighborhood(ai, gameTime, ai.CollisionCondition, (int)lookahead))
             {
-                if (!(company.Owner is Kurve)) { continue; }
-                result.Add(new Circle { Center = company.Center, Radius = company.Bounds.Width / 2f });
+                if (company.Owner is Kurve)
+                {
+                    obstacles.Add(new Circle { Center = company.Center, Radius = company.Bounds.Width / 2f });
+                    continue;
+                }
+
+                var powerup = company.Owner as Powerup;
+                if (powerup == null || !powerup.CanBeHit) { continue; }
+
+                if (powerup is Death)
+                {
+                    obstacles.Add(new Circle { Center = PowerupCenter(powerup), Radius = Powerup.Width / 2f });
+                }
+                else
+                {
+                    powerups.Add(powerup);
+                }
             }
-            return result;
         }
 
         private float FreeDistance(AiPlayer ai, float heading, float lookahead, List<Circle> obstacles)
@@ -222,7 +312,10 @@ namespace AchtungDieKurve.Game.AI
             if (player == null || !player.IsAlive || !GameBase.Defaults.DebugCollisions) { return; }
 
             var lookahead = Lookahead(player);
-            var obstacles = SenseObstacles(player, gameTime, lookahead);
+            List<Circle> obstacles;
+            List<Powerup> powerups;
+            Sense(player, gameTime, lookahead, out obstacles, out powerups);
+
             foreach (var offset in FeelerOffsets)
             {
                 var heading = player.Angle + offset;
